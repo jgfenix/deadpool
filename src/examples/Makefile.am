@@ -44,6 +44,8 @@ ELEMENTARY_CODEGEN = $(top_builddir)/src/bin/@ELEMENTARY_CODEGEN_PRG@
 ELEMENTARY_CODEGEN_FLAGS = --prefix=codegen_example
 
 SRCS = \
+an.c \
+win_.c \       
 actionslider_example_01.c \
 bg_example_01.c \
 bg_example_02.c \
@@ -190,6 +192,8 @@ codegen_example_generated.c \
 codegen_example_generated.h
 
 examples_PROGRAMS = \
+an \
+win_ \
 actionslider_example_01 \
 bg_example_01 \
 bg_example_02 \
