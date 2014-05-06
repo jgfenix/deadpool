@@ -81,8 +81,7 @@ elm_main(int argc, char **argv)
    evas_object_show(b_exit);
    evas_object_smart_callback_add(b_exit, "clicked", on_done, NULL); 
   
-   elm_naviframe_item_push(nv, NULL, NULL, box, NULL, NULL);//adiciona o box ao naviframe
-
+   elm_naviframe_item_push(nv, NULL, NULL, box, NULL, NULL);
    
    elm_run();
    elm_shutdown();
