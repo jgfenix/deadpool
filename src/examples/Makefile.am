@@ -45,7 +45,6 @@ ELEMENTARY_CODEGEN_FLAGS = --prefix=codegen_example
 
 SRCS = \
 an.c \
-win_.c \       
 actionslider_example_01.c \
 bg_example_01.c \
 bg_example_02.c \
@@ -104,6 +103,7 @@ image_example_01.c \
 index_example_01.c \
 index_example_02.c \
 inwin_example.c \
+inwin_example_01.c \
 label_example_01.c \
 layout_example.edc \
 layout_example_01.c \
@@ -153,6 +153,7 @@ transit_example_04.c \
 web_example_01.c \
 web_example_02.c \
 win_example.c \
+win_example_01.c \
 track_example_01.c
 
 .edc.edj:
@@ -248,6 +249,7 @@ image_example_01 \
 index_example_01 \
 index_example_02 \
 inwin_example \
+inwin_example_01 \
 label_example_01 \
 layout_example_01 \
 layout_example_02 \
@@ -295,6 +297,7 @@ transit_example_04 \
 web_example_01 \
 web_example_02 \
 win_example \
+win_example_01 \
 track_example_01
 
 if ELEMENTARY_WINDOWS_BUILD
