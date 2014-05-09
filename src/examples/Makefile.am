@@ -119,6 +119,7 @@ map_example_03.c \
 mapbuf_example.c \
 menu_example_01.c \
 naviframe_example.c \
+naviframe_example_01.c \
 notify_example_01.c \
 panes_example.c \
 panel_example_01.c \
@@ -153,7 +154,6 @@ transit_example_04.c \
 web_example_01.c \
 web_example_02.c \
 win_example.c \
-win_example_01.c \
 track_example_01.c
 
 .edc.edj:
@@ -264,6 +264,7 @@ map_example_03 \
 mapbuf_example \
 menu_example_01 \
 naviframe_example \
+naviframe_example_01 \
 notify_example_01 \
 panes_example \
 panel_example_01 \
@@ -297,7 +298,6 @@ transit_example_04 \
 web_example_01 \
 web_example_02 \
 win_example \
-win_example_01 \
 track_example_01
 
 if ELEMENTARY_WINDOWS_BUILD

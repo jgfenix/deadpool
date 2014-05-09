@@ -37,7 +37,7 @@ elm_main(int argc, char **argv)
    elm_object_text_set(btn, "Go to Second Page.");
    evas_object_smart_callback_add(btn, "clicked", _btn_cb, nf);
 
-   elm_naviframe_item_push(nf, "First Page", NULL, NULL, btn, NULL);
+   elm_naviframe_item_push(nf, NULL, NULL, btn, NULL, NULL);
 
    elm_run();
 
