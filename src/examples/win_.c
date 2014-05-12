@@ -24,17 +24,17 @@ static void//inwin mode 'on' to show the content of app button
    b_inw_cb(void *data, Evas_Object *previous_win, void *event_info)
    {
     
-    Evas_Object  *inw_box, *ic, *b_back, *bt ;
+    Evas_Object  *win, *inw_box, *ic, *b_back, *bt ;
     
-    _win = elm_object_top_widget_get(previous_win);//get the previous window as parameter
+    win = elm_object_top_widget_get(previous_win);//get the previous window as parameter
       
-    in_win = elm_win_inwin_add(_win); 
+    in_win = elm_win_inwin_add(win); 
     elm_win_inwin_activate(in_win);//evas_object_show(in_win);
        
-    inw_box = elm_box_add(_win);
+    inw_box = elm_box_add(win);
     elm_box_horizontal_set(inw_box, EINA_TRUE);
     evas_object_size_hint_weight_set(inw_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 
-    elm_win_resize_object_add(_win, inw_box);
+    elm_win_resize_object_add(win, inw_box);
     elm_box_padding_set(inw_box, 1, 1);
     evas_object_show(inw_box);
 
@@ -44,7 +44,7 @@ static void//inwin mode 'on' to show the content of app button
     evas_object_show(b_back);
     evas_object_smart_callback_add(b_back, "clicked", back_win, NULL);
         
-    ic = elm_icon_add(_win);
+    ic = elm_icon_add(win);
     elm_icon_order_lookup_set(ic, ELM_ICON_LOOKUP_THEME_FDO);
     elm_icon_standard_set(ic, "chat");
     evas_object_show(ic);
@@ -56,7 +56,7 @@ static void//inwin mode 'on' to show the content of app button
     evas_object_show(bt);
     //evas_object_smart_callback_add(bt, "clicked", kill_bt, NULL);
 
-    ic = elm_icon_add(_win);
+    ic = elm_icon_add(win);
     elm_icon_order_lookup_set(ic, ELM_ICON_LOOKUP_THEME_FDO);
     elm_icon_standard_set(ic, "clock");
     evas_object_show(ic);
@@ -68,7 +68,7 @@ static void//inwin mode 'on' to show the content of app button
     evas_object_show(bt);
     //evas_object_smart_callback_add(bt, "clicked", kill_bt, NULL);
 
-    ic = elm_icon_add(_win);
+    ic = elm_icon_add(win);
     elm_icon_order_lookup_set(ic, ELM_ICON_LOOKUP_THEME_FDO);
     elm_icon_standard_set(ic, "arrow_right");
     evas_object_show(ic);
@@ -284,7 +284,7 @@ elm_main(int argc, char **argv)
    elm_box_pack_end(app_box, b_app);
    evas_object_size_hint_min_set(b_app, 100, 100); 
    evas_object_show(b_app);
-   evas_object_smart_callback_add(b_app, "clicked", b_inw_cb, NULL);
+   evas_object_smart_callback_add(b_app, "clicked", b_inw_cb, win);
   
    elm_naviframe_item_push(nv, NULL, NULL, box, b_app, NULL);//'zero' naviframe mode
    
