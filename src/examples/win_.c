@@ -38,7 +38,7 @@ static void//inwin mode 'on' to show the content of app button
     elm_box_padding_set(inw_box, 1, 1);
     evas_object_show(inw_box);
 
-    b_back = elm_button_add(inw_box);
+    b_back = elm_button_add(win);
     elm_object_text_set(b_back, " back ");
     elm_box_pack_end(inw_box, b_back);
     evas_object_show(b_back);
@@ -49,7 +49,7 @@ static void//inwin mode 'on' to show the content of app button
     elm_icon_standard_set(ic, "chat");
     evas_object_show(ic);
 
-    bt = elm_button_add(inw_box);
+    bt = elm_button_add(win);
     elm_object_text_set(bt, "chat ");
     elm_object_part_content_set(bt, "icon", ic);
     elm_box_pack_end(inw_box, bt);
@@ -61,7 +61,7 @@ static void//inwin mode 'on' to show the content of app button
     elm_icon_standard_set(ic, "clock");
     evas_object_show(ic);
 
-    bt = elm_button_add(inw_box);
+    bt = elm_button_add(win);
     elm_object_text_set(bt, "Clock");
     elm_object_part_content_set(bt, "icon", ic);
     elm_box_pack_end(inw_box, bt);
@@ -73,7 +73,7 @@ static void//inwin mode 'on' to show the content of app button
     elm_icon_standard_set(ic, "arrow_right");
     evas_object_show(ic);
 
-    bt = elm_button_add(inw_box);
+    bt = elm_button_add(win);
     elm_object_text_set(bt, "Player ");
     elm_object_part_content_set(bt, "icon", ic);
     elm_box_pack_end(inw_box, bt);
@@ -107,7 +107,7 @@ static void//second naviframe
   {
    Evas_Object *nv = data, *ic, *bt, *nv_box, *b_exit;
    
-  if(data != NULL)
+  if(nv != NULL)
    { 
    nv_box = elm_box_add(nv);
    elm_box_horizontal_set(nv_box, EINA_FALSE);
@@ -142,9 +142,9 @@ static void//second naviframe
 static void//'first' naviframe mode
   n_frame_1(void *data, Evas_Object *obj, void *event_info)
   {
-   Evas_Object *nv = data, *ic, *fs_bt, *en, *nv_box, *b_next, *b_exit;
+   Evas_Object *nv = data, *nv_box, *ic, *fs_bt, *en, *b_next, *b_exit;
    
-  if(data != NULL)
+  if(nv != NULL)
    {
    nv_box = elm_box_add(nv);
    elm_box_horizontal_set(nv_box, EINA_FALSE);
@@ -203,7 +203,7 @@ EAPI_MAIN int
 
 elm_main(int argc, char **argv)
 {
-   Evas_Object *win, *nv, *box, *app_box, *ic,  *b_next, *b_exit, *b_app ;
+   Evas_Object *win, *nv, *box, *app_box, *ic, *b_next, *b_exit, *b_app ;
 
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
 
@@ -228,7 +228,7 @@ elm_main(int argc, char **argv)
    evas_object_smart_callback_add(b_exit, "clicked", exit_program, NULL);
 /*----------------------------------------------------------------------------------*/
 
-   win = elm_win_util_standard_add("WIN_", "menu_test");
+   win = elm_win_util_standard_add("WIN", "_naviframe_");
    evas_object_smart_callback_add(win, "delete,request", exit_program, NULL);
    elm_win_autodel_set(win, EINA_TRUE); 
    evas_object_resize(win, 400, 300);
@@ -286,7 +286,7 @@ elm_main(int argc, char **argv)
    evas_object_show(b_app);
    evas_object_smart_callback_add(b_app, "clicked", b_inw_cb, win);
   
-   elm_naviframe_item_push(nv, NULL, NULL, box, b_app, NULL);//'zero' naviframe mode
+   elm_naviframe_item_push(nv, NULL, NULL, box, app_box, NULL);//'zero' naviframe mode
    
    
    elm_run();
