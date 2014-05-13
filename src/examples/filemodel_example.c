@@ -603,6 +603,7 @@ elm_main(int argc, char **argv)
     * Will switch from eo2 to eo soon.
     */
    _tree_m = eo_add_custom(MODEL_FILE_TREE_CLASS, NULL, model_file_tree_constructor("./"));
+
    //_tree_m = eo_add_custom(ELM_OBJ_TREE_MUTABLE_CLASS .. to be continued
 
    _tree_v = eo_add_custom(ELM_VIEW_TREE_CLASS, NULL,

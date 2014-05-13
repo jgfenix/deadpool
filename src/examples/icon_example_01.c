@@ -13,7 +13,6 @@ elm_main(int argc, char **argv)
 
    win = elm_win_util_standard_add("icon", "Icon");
    elm_win_autodel_set(win, EINA_TRUE);
-
    icon = elm_icon_add(win);
    elm_icon_order_lookup_set(icon, ELM_ICON_LOOKUP_THEME_FDO);
    elm_icon_standard_set(icon, "home");

@@ -50,7 +50,7 @@ _btn_click_cb(void *data, Evas_Object *obj, void *event)
    parent = elm_object_top_widget_get(obj);
    inwin = elm_win_inwin_add(parent);
    elm_object_style_set(inwin, styles[current_style]);
-   evas_object_show(inwin);
+   evas_object_show(inwin); //or elm_win_inwin_activate(inwin);
 
    current_style = (current_style + 1) % 3;
 
@@ -61,7 +61,7 @@ _btn_click_cb(void *data, Evas_Object *obj, void *event)
    evas_object_show(o);
 
    o = elm_label_add(parent);
-   elm_object_text_set(o, "Click on the first button to hide the Inwin.<ps>"
+   elm_object_text_set(o, "Click on the first button to hide the Inwin.<br>"// <br> == <ps>
                        "Second to destroy it<ps>");
    evas_object_show(o);
 

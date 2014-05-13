@@ -69,7 +69,7 @@ elm_main(int argc, char **argv)
    evas_object_show(box);
 
    o_bg = elm_bg_add(win);
-   snprintf(buf, sizeof(buf), "%s/images/plant_01.jpg", elm_app_data_dir_get());
+   snprintf(buf, sizeof(buf), "%s/images/cube1.png", elm_app_data_dir_get());
    elm_bg_file_set(o_bg, buf, NULL);
    evas_object_size_hint_weight_set(o_bg, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    evas_object_size_hint_align_set(o_bg, EVAS_HINT_FILL, EVAS_HINT_FILL);

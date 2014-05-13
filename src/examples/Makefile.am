@@ -44,6 +44,7 @@ ELEMENTARY_CODEGEN = $(top_builddir)/src/bin/@ELEMENTARY_CODEGEN_PRG@
 ELEMENTARY_CODEGEN_FLAGS = --prefix=codegen_example
 
 SRCS = \
+an.c \
 actionslider_example_01.c \
 bg_example_01.c \
 bg_example_02.c \
@@ -102,6 +103,7 @@ image_example_01.c \
 index_example_01.c \
 index_example_02.c \
 inwin_example.c \
+inwin_example_01.c \
 label_example_01.c \
 layout_example.edc \
 layout_example_01.c \
@@ -117,6 +119,7 @@ map_example_03.c \
 mapbuf_example.c \
 menu_example_01.c \
 naviframe_example.c \
+naviframe_example_01.c \
 notify_example_01.c \
 panes_example.c \
 panel_example_01.c \
@@ -190,6 +193,8 @@ codegen_example_generated.c \
 codegen_example_generated.h
 
 examples_PROGRAMS = \
+an \
+win_ \
 actionslider_example_01 \
 bg_example_01 \
 bg_example_02 \
@@ -244,6 +249,7 @@ image_example_01 \
 index_example_01 \
 index_example_02 \
 inwin_example \
+inwin_example_01 \
 label_example_01 \
 layout_example_01 \
 layout_example_02 \
@@ -258,6 +264,7 @@ map_example_03 \
 mapbuf_example \
 menu_example_01 \
 naviframe_example \
+naviframe_example_01 \
 notify_example_01 \
 panes_example \
 panel_example_01 \
