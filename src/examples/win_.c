@@ -135,7 +135,7 @@ static void//second naviframe
 
 
   elm_naviframe_item_push(nv, NULL, NULL, NULL, nv_box, NULL);
-   //evas_object_smart_callback_add(b_next, "clicked", n_frame_2, nv);
+   // evas_object_smart_callback_add(b_next, "clicked", n_frame_2, nv);
    }
   }
 
