@@ -120,6 +120,7 @@ mapbuf_example.c \
 menu_example_01.c \
 naviframe_example.c \
 naviframe_example_01.c \
+naviframe_example_02.c \
 notify_example_01.c \
 panes_example.c \
 panel_example_01.c \
@@ -265,6 +266,7 @@ mapbuf_example \
 menu_example_01 \
 naviframe_example \
 naviframe_example_01 \
+naviframe_example_02 \
 notify_example_01 \
 panes_example \
 panel_example_01 \
