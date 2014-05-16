@@ -86,8 +86,7 @@ static void
   {  
    Evas_Object *win, *image;
     char *file = selected_item;  
-   printf("\nSelected item > %s", file);
-
+   
    if (file != NULL)
      {   
         win = elm_win_util_standard_add("image", "Image");
