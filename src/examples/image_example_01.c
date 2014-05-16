@@ -16,7 +16,7 @@ elm_main(int argc, char **argv)
    elm_win_autodel_set(win, EINA_TRUE);
 
    snprintf(buf, sizeof(buf), "%s/images/plant_01.jpg", elm_app_data_dir_get());
-
+   printf("\n%s\n", buf);
    image = elm_image_add(win);
    if (!elm_image_file_set(image, buf, NULL))
      {

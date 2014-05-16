@@ -1,12 +1,9 @@
 #include <Elementary.h>
 
-static Evas_Object *bx, *_win, *in_win ;
+static Evas_Object *in_win ;
 
-static void//delete buttons when clicked
-  kill_bt(void *data, Evas_Object *bt, void *event_info)
-  {   
-     evas_object_del(bt);
-  }
+//static char *file;
+
 
 static void//exit
   exit_program(void *data, Evas_Object *obj, void *event_info)
@@ -82,25 +79,43 @@ static void//inwin mode 'on' to show the content of app button
     elm_win_inwin_content_set(in_win, inw_box);  
    }
 
-
-static void//make 'buttons' with File and print the file in terminal
-   _file_chosen(void *data, Evas_Object *obj, void *event_info)
+//if you select an image, this callback shows it in another window and 
+//expands to show the entire image
+static void
+   _file_chosen(void *data, Evas_Object *obj, void *selected_item)
   {  
-   Evas_Object *bt;
-   const char *file = event_info;
-   
-    if (data!= NULL)
-     {     
-       bt = elm_button_add(_win);
-       elm_object_text_set(bt, file);
-       elm_box_pack_end(bx, bt);
-       evas_object_show(bt);
-       evas_object_smart_callback_add(bt, "clicked", kill_bt, NULL); 
-       printf("File chosen: %s\n", file);
+   Evas_Object *win, *image;
+    char *file = selected_item;  
+   printf("\nSelected item > %s", file);
+
+   if (file != NULL)
+     {   
+        win = elm_win_util_standard_add("image", "Image");
+        elm_win_autodel_set(win, EINA_TRUE); 
+       
+        image = elm_image_add(win);
+  
+   if (!elm_image_file_set(image, file, NULL))
+     {
+        printf("error: could not load image \"%s\"\n", file);
+      }
+
+         elm_image_no_scale_set(image, EINA_TRUE);
+         elm_image_resizable_set(image, EINA_TRUE, EINA_TRUE);
+         elm_image_smooth_set(image, EINA_TRUE);
+         elm_image_orient_set(image, ELM_IMAGE_FLIP_HORIZONTAL);
+         elm_image_aspect_fixed_set(image, EINA_TRUE);
+         elm_image_fill_outside_set(image, EINA_TRUE);
+         elm_image_editable_set(image, EINA_TRUE);
+
+         elm_win_resize_object_add(win, image);
+         evas_object_show(win);
+         evas_object_show(image);
      }
    else
      printf("File selection canceled.\n");
   }
+  
 
 static void//second naviframe 
   n_frame_2(void *data, Evas_Object *obj, void *event_info)
@@ -133,9 +148,9 @@ static void//second naviframe
    evas_object_show(b_exit);
    evas_object_smart_callback_add(b_exit, "clicked", exit_program, NULL);
 
-
   elm_naviframe_item_push(nv, NULL, NULL, NULL, nv_box, NULL);
-   // evas_object_smart_callback_add(b_next, "clicked", n_frame_2, nv);
+   
+  //evas_object_smart_callback_add(b_next, "clicked", n_frame_3, nv);
    }
   }
 
@@ -195,6 +210,7 @@ static void//'first' naviframe mode
     
    elm_naviframe_item_push(nv, NULL, NULL, b_next, nv_box, NULL);
    //elm_naviframe_item_push(nv, NULL, NULL, NULL, fs_bt, NULL);//expand the icon if you don't pack fs_bt
+  //free(file);
    }
   }
 
@@ -203,66 +219,22 @@ EAPI_MAIN int
 
 elm_main(int argc, char **argv)
 {
-   Evas_Object *win, *image, *nv, *box, *app_box, *ic, *b_next, *b_exit, *b_app ;
-   char buf[PATH_MAX];
-   elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
-
-/*-----  EXTERN WINDOW -------------------------------------------------------------*/
-   _win = elm_win_util_standard_add("_win", "selections");
-   evas_object_smart_callback_add(_win, "delete,request", exit_program, NULL);
-   elm_win_autodel_set(_win, EINA_TRUE); 
-   evas_object_resize(_win, 200, 200);
-   evas_object_show(_win);
+   Evas_Object *win, *nv, *box, *app_box, *ic, *b_next, *b_exit, *b_app ;
    
-   bx = elm_box_add(_win);
-   elm_box_horizontal_set(bx, EINA_FALSE);
-   evas_object_size_hint_weight_set(bx, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 
-   elm_win_resize_object_add(_win, bx);
-   elm_box_recalculate(bx);
-   evas_object_show(bx);
-
-   b_exit = elm_button_add(_win);
-   elm_object_text_set(b_exit, " EXIT ");
-   elm_box_pack_start(bx, b_exit);
-   evas_object_show(b_exit);
-   evas_object_smart_callback_add(b_exit, "clicked", exit_program, NULL);
-/*----------------------------------------------------------------------------------*/
+   elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
 
    win = elm_win_util_standard_add("WIN", "_naviframe_");
    evas_object_smart_callback_add(win, "delete,request", exit_program, NULL);
    elm_win_autodel_set(win, EINA_TRUE); 
    evas_object_resize(win, 400, 300);
    evas_object_show(win);
-
-   elm_app_info_set(elm_main, "elementary", "images/plant_01.jpg");
-   snprintf(buf, sizeof(buf), "%s/images/plant_01.jpg", elm_app_data_dir_get());
-
-   image = elm_image_add(win);
-   if (!elm_image_file_set(image, buf, NULL))
-     {
-        printf("error: could not load image \"%s\"\n", buf);
-        return -1;
-     }
-
-   elm_image_no_scale_set(image, EINA_TRUE);
-   elm_image_resizable_set(image, EINA_FALSE, EINA_TRUE);
-   elm_image_smooth_set(image, EINA_FALSE);
-   elm_image_orient_set(image, ELM_IMAGE_FLIP_HORIZONTAL);
-   elm_image_aspect_fixed_set(image, EINA_TRUE);
-   elm_image_fill_outside_set(image, EINA_TRUE);
-   elm_image_editable_set(image, EINA_TRUE);
-
-   evas_object_size_hint_weight_set(image, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-   elm_win_resize_object_add(win, image);
-   evas_object_show(image);  
-
+   
    nv = elm_naviframe_add(win);
    evas_object_size_hint_weight_set(nv, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    elm_win_resize_object_add(win, nv);
    evas_object_show(nv);  
-
    
-   box = elm_box_add(nv);
+   box = elm_box_add(win);
    elm_box_horizontal_set(box, EINA_TRUE);
    evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 
    elm_win_resize_object_add(nv, box);
@@ -272,7 +244,7 @@ elm_main(int argc, char **argv)
    elm_box_horizontal_set(app_box, EINA_TRUE);
    elm_box_homogeneous_set(app_box, EINA_TRUE);
    evas_object_size_hint_weight_set(app_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 
-   elm_win_resize_object_add(win, app_box);
+   elm_win_resize_object_add(nv, app_box);
    evas_object_show(app_box);
 
    ic = elm_icon_add(nv);
