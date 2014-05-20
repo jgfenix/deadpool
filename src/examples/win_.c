@@ -218,7 +218,7 @@ EAPI_MAIN int
 
 elm_main(int argc, char **argv)
 {
-   Evas_Object *win, *nv, *box, *app_box, *ic, *b_next, *b_exit, *b_app ;
+   Evas_Object *win, *nv, *box, *app_box, *ic, *b_next, *b_exit, *b_app;
    
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
 
