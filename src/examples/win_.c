@@ -86,30 +86,37 @@ static void
   {  
    Evas_Object *win, *image;
     char *file = selected_item;  
-   
+    int w, h;
    if (file != NULL)
      {   
         win = elm_win_util_standard_add("image", "Image");
         elm_win_autodel_set(win, EINA_TRUE); 
-       
         image = elm_image_add(win);
-  
+
+          
    if (!elm_image_file_set(image, file, NULL))
      {
         printf("error: could not load image \"%s\"\n", file);
       }
+        elm_image_object_size_get(image, &w, &h);
+        printf("\nw x h = %d x %d\n", w, h);
+        
+         if( w != 0 && h != 0)
+           {
+              elm_image_no_scale_set(image, EINA_TRUE);
+              elm_image_resizable_set(image, EINA_TRUE, EINA_TRUE);
+              elm_image_smooth_set(image, EINA_TRUE);
+              elm_image_orient_set(image, ELM_IMAGE_ORIENT_NONE);
+              elm_image_aspect_fixed_set(image, EINA_TRUE);
+              elm_image_fill_outside_set(image, EINA_TRUE);
+              elm_image_editable_set(image, EINA_TRUE);
+              evas_object_size_hint_weight_set(image, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+              evas_object_resize(win, w, h);
 
-         elm_image_no_scale_set(image, EINA_TRUE);
-         elm_image_resizable_set(image, EINA_TRUE, EINA_TRUE);
-         elm_image_smooth_set(image, EINA_TRUE);
-         elm_image_orient_set(image, ELM_IMAGE_FLIP_HORIZONTAL);
-         elm_image_aspect_fixed_set(image, EINA_TRUE);
-         elm_image_fill_outside_set(image, EINA_TRUE);
-         elm_image_editable_set(image, EINA_TRUE);
-
-         elm_win_resize_object_add(win, image);
-         evas_object_show(win);
-         evas_object_show(image);
+              elm_win_resize_object_add(win, image);
+              evas_object_show(win);
+              evas_object_show(image);
+           }; 
      }
    else
      printf("File selection canceled.\n");
@@ -218,14 +225,14 @@ EAPI_MAIN int
 
 elm_main(int argc, char **argv)
 {
-   Evas_Object *win, *nv, *box, *app_box, *ic, *b_next, *b_exit, *b_app;
+   Evas_Object *win, *nv, *box, *app_box, *ic, *b_next, *b_exit, *b_app ;
    
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
 
    win = elm_win_util_standard_add("WIN", "_naviframe_");
    evas_object_smart_callback_add(win, "delete,request", exit_program, NULL);
    elm_win_autodel_set(win, EINA_TRUE); 
-   evas_object_resize(win, 400, 300);
+   evas_object_resize(win, 600, 500);
    evas_object_show(win);
    
    nv = elm_naviframe_add(win);
