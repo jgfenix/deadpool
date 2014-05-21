@@ -87,36 +87,37 @@ static void
    Evas_Object *win, *image;
     char *file = selected_item;  
     int w, h;
+
    if (file != NULL)
      {   
         win = elm_win_util_standard_add("image", "Image");
         elm_win_autodel_set(win, EINA_TRUE); 
         image = elm_image_add(win);
-
           
-   if (!elm_image_file_set(image, file, NULL))
-     {
-        printf("error: could not load image \"%s\"\n", file);
-      }
+        if (!elm_image_file_set(image, file, NULL))
+         {
+           printf("error: could not load image \"%s\"\n", file);
+         }
+       
         elm_image_object_size_get(image, &w, &h);
         printf("\nw x h = %d x %d\n", w, h);
         
-         if( w != 0 && h != 0)
-           {
-              elm_image_no_scale_set(image, EINA_TRUE);
-              elm_image_resizable_set(image, EINA_TRUE, EINA_TRUE);
-              elm_image_smooth_set(image, EINA_TRUE);
-              elm_image_orient_set(image, ELM_IMAGE_ORIENT_NONE);
-              elm_image_aspect_fixed_set(image, EINA_TRUE);
-              elm_image_fill_outside_set(image, EINA_TRUE);
-              elm_image_editable_set(image, EINA_TRUE);
-              evas_object_size_hint_weight_set(image, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-              evas_object_resize(win, w, h);
-
-              elm_win_resize_object_add(win, image);
-              evas_object_show(win);
-              evas_object_show(image);
-           }; 
+        if( w != 0 && h != 0)
+         {
+           elm_image_no_scale_set(image, EINA_FALSE);
+           elm_image_resizable_set(image, EINA_TRUE, EINA_TRUE);
+           elm_image_smooth_set(image, EINA_TRUE);
+           elm_image_orient_set(image, ELM_IMAGE_ORIENT_NONE);
+           elm_image_aspect_fixed_set(image, EINA_FALSE);
+           elm_image_fill_outside_set(image, EINA_TRUE);
+           elm_image_editable_set(image, EINA_TRUE);
+           evas_object_size_hint_weight_set(image, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+          
+           elm_win_resize_object_add(win, image);
+           evas_object_resize(win, 200, 200);
+ evas_object_show(win);
+           evas_object_show(image);
+         }; 
      }
    else
      printf("File selection canceled.\n");
