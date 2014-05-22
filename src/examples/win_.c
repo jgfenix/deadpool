@@ -86,7 +86,7 @@ static void
   {  
    Evas_Object *win, *image;
     char *file = selected_item;  
-    int w, h;
+    int w, h, hg;
 
    if (file != NULL)
      {   
@@ -98,12 +98,17 @@ static void
          {
            printf("error: could not load image \"%s\"\n", file);
          }
-       
+ 
         elm_image_object_size_get(image, &w, &h);
-        printf("\nw x h = %d x %d\n", w, h);
+                
+        hg = w;//used in elm_image_prescale_set to make the right scale and show without low pixels
+        if(hg < h) hg = h;
         
-        if( w != 0 && h != 0)
+        if( w != 0 && h != 0)//if the width and height are greater than 0, make a window to show the image
          {
+           printf("\nImage path: %s", file); 
+           printf("\nwidth x height = %d x %d\n", w, h);
+           
            elm_image_no_scale_set(image, EINA_FALSE);
            elm_image_resizable_set(image, EINA_TRUE, EINA_TRUE);
            elm_image_smooth_set(image, EINA_TRUE);
@@ -111,13 +116,17 @@ static void
            elm_image_aspect_fixed_set(image, EINA_FALSE);
            elm_image_fill_outside_set(image, EINA_TRUE);
            elm_image_editable_set(image, EINA_TRUE);
-           evas_object_size_hint_weight_set(image, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-          
+           
+           elm_image_prescale_set(image, hg);  
            elm_win_resize_object_add(win, image);
+           evas_object_size_hint_weight_set(image, EVAS_HINT_FILL, EVAS_HINT_FILL);
            evas_object_resize(win, 200, 200);
- evas_object_show(win);
+           evas_object_show(win);
            evas_object_show(image);
-         }; 
+         }
+        else
+          printf("* Invalid path or image *\n");
+
      }
    else
      printf("File selection canceled.\n");
