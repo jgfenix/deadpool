@@ -212,11 +212,9 @@ static void//'first' naviframe mode
    elm_box_pack_end(nv_box, b_exit);
    evas_object_show(b_exit);
    evas_object_smart_callback_add(b_exit, "clicked", exit_program, NULL);
-
     
    elm_naviframe_item_push(nv, NULL, NULL, b_next, nv_box, NULL);
    //elm_naviframe_item_push(nv, NULL, NULL, NULL, fs_bt, NULL);//expand the icon if you don't pack fs_bt
-  //free(file);
    }
   }
 
@@ -250,9 +248,7 @@ elm_main(int argc, char **argv)
    elm_clock_show_am_pm_set(_clock, EINA_TRUE);
    elm_box_pack_start(box, _clock);
    evas_object_show(_clock);
-
-
-
+   
    app_box = elm_box_add(nv);
    elm_box_horizontal_set(app_box, EINA_TRUE);
    elm_box_homogeneous_set(app_box, EINA_TRUE);

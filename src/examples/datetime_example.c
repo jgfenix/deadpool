@@ -12,6 +12,9 @@ elm_main(int argc, char *argv[])
 
    win = elm_win_util_standard_add("Datetime", "Datetime");
    elm_win_autodel_set(win, EINA_TRUE);
+   evas_object_resize(win, 150, 200);
+
+   evas_object_size_hint_weight_set(win, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
    bx = elm_box_add(win);
    evas_object_size_hint_weight_set(bx, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
