@@ -18,7 +18,7 @@ typedef struct _Example_Item
 
 static const char *imgs[9] =
 {
-   "panel_01.jpg",
+   "plant_01.jpg",
    "plant_01.jpg",
    "rock_01.jpg",
    "rock_02.jpg",
