@@ -49,30 +49,20 @@ static void//inwin mode 'on' to show the content of app button
     bt = elm_button_add(win);
     elm_object_text_set(bt, "chat ");
     elm_object_part_content_set(bt, "icon", ic);
+    evas_object_size_hint_min_set(bt, 80, 50); 
     elm_box_pack_end(inw_box, bt);
     evas_object_show(bt);
     //evas_object_smart_callback_add(bt, "clicked", kill_bt, NULL);
-
+ 
     ic = elm_icon_add(win);
     elm_icon_order_lookup_set(ic, ELM_ICON_LOOKUP_THEME_FDO);
-    elm_icon_standard_set(ic, "clock");
-    evas_object_show(ic);
-
-    bt = elm_button_add(win);
-    elm_object_text_set(bt, "Clock");
-    elm_object_part_content_set(bt, "icon", ic);
-    elm_box_pack_end(inw_box, bt);
-    evas_object_show(bt);
-    //evas_object_smart_callback_add(bt, "clicked", kill_bt, NULL);
-
-    ic = elm_icon_add(win);
-    elm_icon_order_lookup_set(ic, ELM_ICON_LOOKUP_THEME_FDO);
-    elm_icon_standard_set(ic, "arrow_right");
+    elm_icon_standard_set(ic, "media_player/play");
     evas_object_show(ic);
 
     bt = elm_button_add(win);
     elm_object_text_set(bt, "Player ");
     elm_object_part_content_set(bt, "icon", ic);
+    evas_object_size_hint_min_set(bt, 80, 50); 
     elm_box_pack_end(inw_box, bt);
     evas_object_show(bt);
            
@@ -235,7 +225,7 @@ EAPI_MAIN int
 
 elm_main(int argc, char **argv)
 {
-   Evas_Object *win, *nv, *box, *app_box, *ic, *b_next, *b_exit, *b_app ;
+   Evas_Object *win, *nv, *box, *app_box, *_clock, *ic, *b_next, *b_exit, *b_app ;
    
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
 
@@ -256,6 +246,13 @@ elm_main(int argc, char **argv)
    elm_win_resize_object_add(nv, box);
    evas_object_show(box);
  
+   _clock = elm_clock_add(nv);
+   elm_clock_show_am_pm_set(_clock, EINA_TRUE);
+   elm_box_pack_start(box, _clock);
+   evas_object_show(_clock);
+
+
+
    app_box = elm_box_add(nv);
    elm_box_horizontal_set(app_box, EINA_TRUE);
    elm_box_homogeneous_set(app_box, EINA_TRUE);
@@ -292,7 +289,7 @@ elm_main(int argc, char **argv)
    elm_object_text_set(b_app, "APPS");
    elm_object_part_content_set(b_app, "icon",ic);
    elm_box_pack_end(app_box, b_app);
-   evas_object_size_hint_min_set(b_app, 100, 100); 
+   evas_object_size_hint_min_set(b_app, 200, 200); 
    evas_object_show(b_app);
    evas_object_smart_callback_add(b_app, "clicked", b_inw_cb, win);
   
