@@ -145,7 +145,7 @@ static void//second naviframe
    elm_object_text_set(bt, "Write");
    elm_object_part_content_set(bt, "icon", ic);
    elm_box_pack_end(nv_box, bt);
-   evas_object_size_hint_min_set(bt, 100, 100);
+   evas_object_size_hint_min_set(bt, 280, 280);
    evas_object_show(bt);
 
    b_exit = elm_button_add(nv);
@@ -184,7 +184,7 @@ static void//'first' naviframe mode
    elm_object_part_content_set(fs_bt, "icon", ic);
    elm_fileselector_button_inwin_mode_set(fs_bt, EINA_TRUE);
    elm_box_pack_end(nv_box, fs_bt);
-   evas_object_size_hint_min_set(fs_bt, 100, 100);
+   evas_object_size_hint_min_set(fs_bt, 280, 280);
    evas_object_show(fs_bt);
    
    en = elm_entry_add(nv);
@@ -223,8 +223,10 @@ EAPI_MAIN int
 
 elm_main(int argc, char **argv)
 {
-   Evas_Object *win, *nv, *box, *app_box, *_clock, *ic, *b_next, *b_exit, *b_app ;
-   
+   Evas_Object *win, *nv, *box, *app_box, *_clock, *ic, *b_next, *b_exit, *b_app, *image ;
+  
+   char buf[PATH_MAX] = "/home/gabriel/app_store.png";//icon app store from Google
+
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
 
    win = elm_win_util_standard_add("WIN", "_naviframe_");
@@ -281,16 +283,36 @@ elm_main(int argc, char **argv)
    elm_icon_standard_set(ic, "apps");
    evas_object_show(ic);
 
+  image = elm_image_add(win);
+  
+  if (!elm_image_file_set(image, buf, NULL))
+     {
+        printf("error: could not load image \"%s\"\n", buf);
+        return -1;
+     }
+
+   elm_image_no_scale_set(image, EINA_TRUE);
+   elm_image_resizable_set(image, EINA_FALSE, EINA_TRUE);
+   elm_image_smooth_set(image, EINA_FALSE);
+   elm_image_orient_set(image, ELM_IMAGE_ORIENT_NONE);
+   elm_image_aspect_fixed_set(image, EINA_TRUE);
+   elm_image_fill_outside_set(image, EINA_FALSE);
+   elm_image_editable_set(image, EINA_TRUE);
+
+   // evas_object_size_hint_weight_set(image, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   evas_object_show(image);
+
    b_app = elm_button_add(nv);
    elm_object_text_set(b_app, "APPS");
-   elm_object_part_content_set(b_app, "icon",ic);
+   elm_object_part_content_set(b_app,"icon", image);
    elm_box_pack_end(app_box, b_app);
-   evas_object_size_hint_min_set(b_app, 200, 200); 
+   //evas_object_size_hint_min_set(b_app, 100, 100); 
+   //evas_object_resize(b_app, 100, 100);
    evas_object_show(b_app);
+   elm_win_resize_object_add(b_app, image);
    evas_object_smart_callback_add(b_app, "clicked", b_inw_cb, win);
   
    elm_naviframe_item_push(nv, NULL, NULL, box, app_box, NULL);//'zero' naviframe mode
-   
    
    elm_run();
    elm_shutdown();
