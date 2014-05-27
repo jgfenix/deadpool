@@ -42,17 +42,19 @@ elm_main(int argc, char **argv)
    evas_object_smart_callback_add(thumb, "generate,stop", _generation_finished_cb, NULL);
    evas_object_smart_callback_add(thumb, "generate,error", _generation_error_cb, NULL);
 
-   elm_thumb_size_set(thumb, 16, 16);
+   elm_thumb_size_set(thumb, 160, 160);
    elm_thumb_editable_set(thumb, EINA_FALSE);
    snprintf(buf, sizeof(buf), "%s/images/plant_01.jpg", elm_app_data_dir_get());
    elm_thumb_file_set(thumb, buf, NULL);
    elm_thumb_reload(thumb);
 
-   evas_object_size_hint_weight_set(thumb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   evas_object_size_hint_weight_set(thumb,EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
    elm_win_resize_object_add(win, thumb);
    evas_object_show(thumb);
 
-   evas_object_resize(win, 320, 320);
+   evas_object_resize(win, 400, 400);
+   
    evas_object_show(win);
 
    elm_run(); /* and run the program now, starting to handle all
