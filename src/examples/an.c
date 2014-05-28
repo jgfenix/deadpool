@@ -113,7 +113,6 @@ static void
         //elm_box_padding_set(th_box, 1, 1);
         evas_object_show(th_box);
 
-
   if(opendir(folder) != NULL)
    {
      dir = opendir(folder);
