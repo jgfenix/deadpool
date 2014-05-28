@@ -2,56 +2,8 @@
 
 char path_master[PATH_MAX];
 
-static void
-   image_view(void *data, Evas_Object *obj, void *selected_item)
-  {  
-   Evas_Object *win = obj, *image;
-    
-   int w, h, hg;
-
-   if (path_master!= NULL)
-     {   
-        win = elm_win_util_standard_add("image", "Image");
-        elm_win_autodel_set(win, EINA_TRUE); 
-        image = elm_image_add(win);
-          
-        if (!elm_image_file_set(image, path_master, NULL))
-         {
-           printf("\nerror: could not load image \"%s\"\n", path_master);
-         }
- 
-        elm_image_object_size_get(image, &w, &h);
-                
-        hg = w;//used in elm_image_prescale_set to make the right scale and show without low pixels
-        if(hg < h) hg = h;
-        
-        if( w != 0 && h != 0)//if the width and height are greater than 0, make a window to show the image
-         {
-           printf("\nImage path: %s", path_master); 
-           printf("\nwidth x height = %d x %d\n", w, h);
-           
-           elm_image_no_scale_set(image, EINA_FALSE);
-           elm_image_resizable_set(image, EINA_TRUE, EINA_TRUE);
-           elm_image_smooth_set(image, EINA_TRUE);
-           elm_image_orient_set(image, ELM_IMAGE_ORIENT_NONE);
-           elm_image_aspect_fixed_set(image, EINA_FALSE);
-           elm_image_fill_outside_set(image, EINA_TRUE);
-           elm_image_editable_set(image, EINA_TRUE);
-           
-           elm_image_prescale_set(image, hg);  
-           elm_win_resize_object_add(win, image);
-           evas_object_size_hint_weight_set(image, EVAS_HINT_FILL, EVAS_HINT_FILL);
-           evas_object_resize(win, 200, 200);
-           evas_object_show(win);
-           evas_object_show(image);
-         }
-        else
-          printf("* Invalid path or image *\n\n");
-     }
-   else
-     printf("File selection canceled.\n");
-  }
-
+//CRIAR CALLBACK QUE GERA THUMBNAILS
+//THUMB_GENERATOR(PATH)
 
 static void
    _file_chosen(void *data, Evas_Object *obj, void *selected_item);
@@ -127,6 +79,10 @@ static void
         snprintf(buf, sizeof(buf), "%s/%s", folder, lsdir->d_name );
         printf("PATH == %s\n\n", buf);
         
+        //TESTAR ANTES DE CHAMAR THUMB_GENERATOR,SE NÃO FOR IMAGEM, TROCAR PELA GENERICA
+
+
+        //PASSAR TODO O CODIGO DO THUMB PARA A CALBACK QUE CRIAREI
         thumb = elm_thumb_add(th_win);
          
         evas_object_smart_callback_add(thumb, "generate,start", _generation_started_cb, NULL);
@@ -141,26 +97,6 @@ static void
             
         evas_object_size_hint_weight_set(thumb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
         elm_win_resize_object_add(th_box, thumb);
-        //evas_object_show(thumb);
-
-        //elm_icon_thumb_set 
-    
-     /*fs_bt = elm_fileselector_button_add(th_win);
-    elm_fileselector_button_path_set(fs_bt, buf);
-    elm_object_text_set(fs_bt, file);
-    elm_object_part_content_set(fs_bt, "icon", thumb);
-    elm_box_pack_end(th_box, fs_bt);
-    elm_fileselector_button_inwin_mode_set(fs_bt, EINA_TRUE);
-      evas_object_size_hint_min_set(fs_bt, 150, 150);
-    evas_object_show(fs_bt);
- 
-    
-        en = elm_entry_add(th_win);
-    elm_entry_line_wrap_set(en, EINA_FALSE);
-    elm_entry_editable_set(en, EINA_FALSE);
-    evas_object_smart_callback_add(fs_bt, "file,chosen", _file_chosen, en);
-    elm_box_pack_end(th_box, en);
-    evas_object_show(en);*/
 
         bt = elm_button_add(th_win);
         elm_object_text_set(bt, file);
