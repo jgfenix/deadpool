@@ -95,12 +95,13 @@ static void
         evas_object_smart_callback_add(thumb, "generate,stop", _generation_finished_cb, NULL);
         evas_object_smart_callback_add(thumb, "generate,error", _generation_error_cb, NULL);
 
-/*this if tests if the path in 'buf' is an image, if not, it will change the path to a generic image*/        
+/*this if will test if the path in 'buf' is an image, if not, it will change the path to a generic image*/        
          if (!elm_image_file_set(image, buf, NULL))
      {
-        printf("error: could not load image \"%s\"\n", file);          
         snprintf(buf, sizeof(buf), "%s","/usr/share/elementary/images/icon_06.png");
      }
+
+
 /*  THIS PART DO THE SAME AS THE TEST IN elm_image_file_set() */      
       /*  for(i = 0; i < strlen(file) ; i++)
           {
