@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * If you choose an image file(jpg, jpeg, png), this widget will show it in an independet window,
  * if you choose a folder, the widget will scan the folder and create a roll of thumbnails buttons with
@@ -7,12 +6,6 @@
 
 #include <Elementary.h>
 
-=======
-#include <Elementary.h>
-
-char path_master[PATH_MAX];
-
->>>>>>> 5579246ea241fd6d41594525fa835e0da973af92
 static void
    _file_chosen(void *data, Evas_Object *obj, void *selected_item);
 
@@ -50,15 +43,9 @@ _generation_error_cb(void *data, Evas_Object *o, void *event_info)
  *   test if the files inside path are images and create the thumbnails buttons in th_win
  */
 static void 
-<<<<<<< HEAD
  list(char *folder)
 {
   Evas_Object *th_win, *th_box, *thumb, *bt;
-=======
- list(char *folder)//list path from file_chosen if it's a path
-{ 
-  Evas_Object *th_win, *th_box, *thumb, *bt;//, *en ;
->>>>>>> 5579246ea241fd6d41594525fa835e0da973af92
 
   th_win = elm_win_util_standard_add("image_file", "thumb");
   evas_object_smart_callback_add(th_win, "delete,request", exit_th_win, NULL);
@@ -75,24 +62,13 @@ static void
   
   char file[PATH_MAX];
   char buf[PATH_MAX];
-<<<<<<< HEAD
   char test[15];
   memset(test, 15 , '\0');
-=======
-  char test[7];
-  memset(test, 7, '\0');
-
-  char *valid_img[] = {"jpg", "jpeg", "png", NULL};
->>>>>>> 5579246ea241fd6d41594525fa835e0da973af92
 
   DIR *dir;
   struct dirent *lsdir; 
 
-<<<<<<< HEAD
   unsigned char i, count = 0; 
-=======
-  int i, count = 0;
->>>>>>> 5579246ea241fd6d41594525fa835e0da973af92
 
   elm_need_ethumb();
         
@@ -110,46 +86,12 @@ static void
         printf("STRLEN(FILE) == %ld\n",strlen(file));
 
         snprintf(buf, sizeof(buf), "%s/%s", folder, lsdir->d_name );
-<<<<<<< HEAD
 
-=======
-        printf("PATH == %s\n", buf);
-
-        for(i = 0; i < PATH_MAX ; i++)
-          {
-             if( file[i] != '.') 
-               count ++;
-            
-             else
-               break;
-          };   
-
-        printf("COUNT = %d\n", count);
-        
-        count = count +1;
-
-        for(i = 0; i < 5 ; i++, count++ )
-             test[i] = file[count] ;
-
-        printf("FINAL == %s\n",test);
-
-        count = 0;
-        
-        for(i = 1; valid_img[i] != NULL; i++)
-          {
-             if(strcmp(test, valid_img[i]) != 0)
-               
-            snprintf(buf, sizeof(buf), "%s","/usr/local/share/elementary/images/plant_01.jpg" );
-            //printf("File %s not valid \n\n", file);
-         };   
-       
->>>>>>> 5579246ea241fd6d41594525fa835e0da973af92
         thumb = elm_thumb_add(th_win);
          
         evas_object_smart_callback_add(thumb, "generate,start", _generation_started_cb, NULL);
         evas_object_smart_callback_add(thumb, "generate,stop", _generation_finished_cb, NULL);
         evas_object_smart_callback_add(thumb, "generate,error", _generation_error_cb, NULL);
-<<<<<<< HEAD
        
         for(i = 0; i < strlen(file) ; i++)
           {
@@ -189,10 +131,6 @@ static void
       printf("PATH == %s\n\n", buf);
               
         elm_thumb_editable_set(thumb, EINA_FALSE);
-=======
-               
-        elm_thumb_editable_set(thumb, EINA_TRUE);
->>>>>>> 5579246ea241fd6d41594525fa835e0da973af92
         elm_thumb_file_set(thumb, buf, NULL);
         elm_thumb_reload(thumb);
         
@@ -205,13 +143,8 @@ static void
 
         //evas_object_smart_callback_add(bt, "clicked", image_view, th_win);
         elm_box_recalculate(th_box);  
-<<<<<<< HEAD
             
         memset(test, 15 , '\0');
-=======
-
-            
->>>>>>> 5579246ea241fd6d41594525fa835e0da973af92
       }; 
 
      closedir(dir);
