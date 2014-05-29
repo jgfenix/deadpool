@@ -45,7 +45,7 @@ _generation_error_cb(void *data, Evas_Object *o, void *event_info)
 static void 
  list(char *folder)
 {
-  Evas_Object *th_win, *th_box, *thumb, *bt;
+  Evas_Object *th_win, *th_box, *thumb, *image, *bt;
 
   th_win = elm_win_util_standard_add("image_file", "thumb");
   evas_object_smart_callback_add(th_win, "delete,request", exit_th_win, NULL);
@@ -57,9 +57,10 @@ static void
   elm_box_horizontal_set(th_box, EINA_TRUE);
   evas_object_size_hint_weight_set(th_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 
   elm_win_resize_object_add(th_win, th_box);
-  elm_box_padding_set(th_box, 1, 1);
+  elm_box_padding_set(th_box, 10, 10);
   evas_object_show(th_box);
-  
+
+  image = elm_image_add(th_win);
   char file[PATH_MAX];
   char buf[PATH_MAX];
   char test[15];
@@ -92,8 +93,14 @@ static void
         evas_object_smart_callback_add(thumb, "generate,start", _generation_started_cb, NULL);
         evas_object_smart_callback_add(thumb, "generate,stop", _generation_finished_cb, NULL);
         evas_object_smart_callback_add(thumb, "generate,error", _generation_error_cb, NULL);
-       
-        for(i = 0; i < strlen(file) ; i++)
+
+         if (!elm_image_file_set(image, buf, NULL))
+     {
+        printf("error: could not load image \"%s\"\n", file);
+            snprintf(buf, sizeof(buf), "%s","/usr/local/share/elementary/images/generic_thumb.png" );
+     }
+/*  THIS PART DO THE SAME AS THE TEST IN elm_image_file_set() */      
+      /*  for(i = 0; i < strlen(file) ; i++)
           {
              if( file[i] != '.') 
                count ++;
@@ -127,7 +134,7 @@ static void
 
       else
            printf("TYPE OF FILE == folder\n");
-       
+       */
       printf("PATH == %s\n\n", buf);
               
         elm_thumb_editable_set(thumb, EINA_FALSE);

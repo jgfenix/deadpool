@@ -9,13 +9,13 @@ elm_main(int argc, char **argv)
    Evas_Object *win, *image, *fs_bt, *box;
    char buf[PATH_MAX];
 
-   elm_app_info_set(elm_main, "elementary", "images/plant_01.jpg");
+   elm_app_info_set(elm_main, "elementary", "images/an.c");
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
 
    win = elm_win_util_standard_add("image", "Image");
    elm_win_autodel_set(win, EINA_TRUE);
 
-   snprintf(buf, sizeof(buf), "%s/images/plant_01.jpg", elm_app_data_dir_get());
+   snprintf(buf, sizeof(buf), "%s/images/an.c", elm_app_data_dir_get());
    printf("\n%s\n", buf);
    image = elm_image_add(win);
    if (!elm_image_file_set(image, buf, NULL))
