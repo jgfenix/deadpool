@@ -57,19 +57,20 @@ static void
   elm_box_horizontal_set(th_box, EINA_TRUE);
   evas_object_size_hint_weight_set(th_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 
   elm_win_resize_object_add(th_win, th_box);
-  elm_box_padding_set(th_box, 10, 10);
+  elm_box_padding_set(th_box, 5, 5);
   evas_object_show(th_box);
 
   image = elm_image_add(th_win);
+
   char file[PATH_MAX];
   char buf[PATH_MAX];
-  char test[15];
-  memset(test, 15 , '\0');
+//  char test[15];
+ // memset(test, 15 , '\0');
 
   DIR *dir;
   struct dirent *lsdir; 
 
-  unsigned char i, count = 0; 
+  //unsigned char i, count = 0; 
 
   elm_need_ethumb();
         
@@ -84,7 +85,7 @@ static void
         snprintf(file, sizeof(file), "%s", lsdir->d_name );
         printf("NAME OF FILE == %s\n",file);
 
-        printf("STRLEN(FILE) == %ld\n",strlen(file));
+        //printf("STRLEN(FILE) == %ld\n",strlen(file));
 
         snprintf(buf, sizeof(buf), "%s/%s", folder, lsdir->d_name );
 
@@ -94,6 +95,7 @@ static void
         evas_object_smart_callback_add(thumb, "generate,stop", _generation_finished_cb, NULL);
         evas_object_smart_callback_add(thumb, "generate,error", _generation_error_cb, NULL);
 
+/*this if tests if the path in 'buf' is an image, if not, it will change the path to a generic image*/        
          if (!elm_image_file_set(image, buf, NULL))
      {
         printf("error: could not load image \"%s\"\n", file);
@@ -135,7 +137,7 @@ static void
       else
            printf("TYPE OF FILE == folder\n");
        */
-      printf("PATH == %s\n\n", buf);
+        printf("PATH == %s\n\n", buf);
               
         elm_thumb_editable_set(thumb, EINA_FALSE);
         elm_thumb_file_set(thumb, buf, NULL);
@@ -151,7 +153,7 @@ static void
         //evas_object_smart_callback_add(bt, "clicked", image_view, th_win);
         elm_box_recalculate(th_box);  
             
-        memset(test, 15 , '\0');
+        //memset(test, 15 , '\0');
       }; 
 
      closedir(dir);
