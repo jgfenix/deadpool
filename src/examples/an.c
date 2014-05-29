@@ -2,9 +2,6 @@
 
 char path_master[PATH_MAX];
 
-//CRIAR CALLBACK QUE GERA THUMBNAILS
-//THUMB_GENERATOR(PATH)
-
 static void
    _file_chosen(void *data, Evas_Object *obj, void *selected_item);
 
@@ -43,29 +40,35 @@ static void
  list(char *folder)//list path from file_chosen if it's a path
 { 
   Evas_Object *th_win, *th_box, *thumb, *bt;//, *en ;
+
+  th_win = elm_win_util_standard_add("image_file", "thumb");
+  evas_object_smart_callback_add(th_win, "delete,request", exit_th_win, NULL);
+  elm_win_autodel_set(th_win, EINA_TRUE); 
+  evas_object_resize(th_win, 1, 1);
+  evas_object_show(th_win);   
+  
+  th_box = elm_box_add(th_win);
+  elm_box_horizontal_set(th_box, EINA_TRUE);
+  evas_object_size_hint_weight_set(th_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 
+  elm_win_resize_object_add(th_win, th_box);
+  elm_box_padding_set(th_box, 1, 1);
+  evas_object_show(th_box);
   
   char file[PATH_MAX];
   char buf[PATH_MAX];
- 
+  char test[7];
+  memset(test, 7, '\0');
+
+  char *valid_img[] = {"jpg", "jpeg", "png", NULL};
+
   DIR *dir;
   struct dirent *lsdir; 
- 
+
+  int i, count = 0;
+
   elm_need_ethumb();
         
-        th_win = elm_win_util_standard_add("image_file", "thumb");
-        evas_object_smart_callback_add(th_win, "delete,request", exit_th_win, NULL);
-        elm_win_autodel_set(th_win, EINA_TRUE); 
-        evas_object_resize(th_win, 1, 1);
-        evas_object_show(th_win);   
-  
-        th_box = elm_box_add(th_win);
-        elm_box_horizontal_set(th_box, EINA_TRUE);
-        evas_object_size_hint_weight_set(th_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 
-        elm_win_resize_object_add(th_win, th_box);
-        //elm_box_padding_set(th_box, 1, 1);
-        evas_object_show(th_box);
-
-  if(opendir(folder) != NULL)
+   if(opendir(folder) != NULL)
    {
      dir = opendir(folder);
      while ( ( lsdir = readdir(dir) ) != NULL )
@@ -77,27 +80,46 @@ static void
         printf("NAME == %s\n",file);
 
         snprintf(buf, sizeof(buf), "%s/%s", folder, lsdir->d_name );
-        printf("PATH == %s\n\n", buf);
+        printf("PATH == %s\n", buf);
+
+        for(i = 0; i < PATH_MAX ; i++)
+          {
+             if( file[i] != '.') 
+               count ++;
+            
+             else
+               break;
+          };   
+
+        printf("COUNT = %d\n", count);
         
-        //TESTAR ANTES DE CHAMAR THUMB_GENERATOR,SE NÃO FOR IMAGEM, TROCAR PELA GENERICA
+        count = count +1;
 
+        for(i = 0; i < 5 ; i++, count++ )
+             test[i] = file[count] ;
 
-        //PASSAR TODO O CODIGO DO THUMB PARA A CALBACK QUE CRIAREI
+        printf("FINAL == %s\n",test);
+
+        count = 0;
+        
+        for(i = 1; valid_img[i] != NULL; i++)
+          {
+             if(strcmp(test, valid_img[i]) != 0)
+               
+            snprintf(buf, sizeof(buf), "%s","/usr/local/share/elementary/images/plant_01.jpg" );
+            //printf("File %s not valid \n\n", file);
+         };   
+       
         thumb = elm_thumb_add(th_win);
          
         evas_object_smart_callback_add(thumb, "generate,start", _generation_started_cb, NULL);
         evas_object_smart_callback_add(thumb, "generate,stop", _generation_finished_cb, NULL);
         evas_object_smart_callback_add(thumb, "generate,error", _generation_error_cb, NULL);
                
-        //elm_thumb_size_set(thumb, 150, 150);
         elm_thumb_editable_set(thumb, EINA_TRUE);
         elm_thumb_file_set(thumb, buf, NULL);
-        //elm_box_pack_end(th_box, thumb);
         elm_thumb_reload(thumb);
-            
-        evas_object_size_hint_weight_set(thumb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-        elm_win_resize_object_add(th_box, thumb);
-
+        
         bt = elm_button_add(th_win);
         elm_object_text_set(bt, file);
         elm_object_part_content_set(bt, "icon", thumb);
@@ -105,10 +127,10 @@ static void
         evas_object_size_hint_min_set(bt, 100, 100);
         evas_object_show(bt);
 
-        evas_object_smart_callback_add(bt, "clicked", image_view, th_win);
+        //evas_object_smart_callback_add(bt, "clicked", image_view, th_win);
         elm_box_recalculate(th_box);  
 
-        snprintf(path_master, sizeof(path_master), "%s", buf );
+            
       }; 
 
      closedir(dir);
