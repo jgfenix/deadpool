@@ -216,16 +216,24 @@ EAPI_MAIN int
 
 elm_main(int argc, char **argv)
 {
-   Evas_Object *win, *box, *ic, *fs_bt, *en, *b_exit ;
+   Evas_Object *win, *thumb, *box, *ic, *fs_bt, *en, *b_exit ;
    
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
   
+  elm_need_ethumb();
     win = elm_win_util_standard_add("image/thumb", "Image_&_Thumb_Generator");
     evas_object_smart_callback_add(win, "delete,request", exit_cb, NULL);
     elm_win_autodel_set(win, EINA_TRUE);
     evas_object_resize(win, 600, 800);
     evas_object_show(win);
-   
+
+    thumb = elm_thumb_add(win);
+         
+        elm_thumb_reload(thumb);
+    evas_object_smart_callback_add(thumb, "generate,start", _generation_started_cb, NULL);
+    evas_object_smart_callback_add(thumb, "generate,stop", _generation_finished_cb, NULL);
+    evas_object_smart_callback_add(thumb, "generate,error", _generation_error_cb, NULL);
+
     box = elm_box_add(win);
     elm_box_horizontal_set(box, EINA_TRUE);
     evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 

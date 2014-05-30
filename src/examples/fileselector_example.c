@@ -11,6 +11,27 @@
 
 #include <Elementary.h>
 
+static void 
+ thumb_generator(char *file, Evas_Object *th_win)
+{
+  Evas_Object *thumb, *image;
+
+  char buf[PATH_MAX];
+  snprintf(buf, sizeof(buf), "%s", file);
+ 
+  image = elm_image_add(th_win);
+  thumb = elm_thumb_add(th_win);
+         
+  if (!elm_image_file_set(image, buf , NULL))
+   snprintf(buf, sizeof(buf), "%s","/usr/share/elementary/images/icon_06.png");
+
+   printf("PATH == %s\n\n", buf);
+              
+   elm_thumb_file_set(thumb, buf, NULL);
+   elm_thumb_reload(thumb);
+   evas_object_show(thumb);
+}
+
 /* 'done' cb */
 static void
 _fs_done(void        *data,
@@ -33,10 +54,12 @@ _fs_selected(void        *data,
              Evas_Object *obj,
              void        *event_info)
 {
+   Evas_Object *thumb;
    const char *selected = event_info;
    /* event_info contains the full path of the selected file */
-
    printf("There's been a selection: %s\n", selected);
+
+  thumb_generator(event_info, data);
 }
 
 static void
@@ -137,8 +160,9 @@ elm_main(int    argc,
    /* custom list view */
    elm_fileselector_expandable_set(fs, EINA_FALSE);
    /* start the fileselector in the /tmp/ dir */
-   elm_fileselector_path_set(fs, "/tmp");
-
+   elm_fileselector_path_set(fs, "/home/gabriel/imagens");
+   
+      
    evas_object_size_hint_weight_set(fs, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    evas_object_size_hint_align_set(fs, EVAS_HINT_FILL, EVAS_HINT_FILL);
    elm_box_pack_end(vbox, fs);
@@ -208,7 +232,7 @@ elm_main(int    argc,
    elm_fileselector_is_save_set(fs, EINA_TRUE);
    elm_fileselector_mode_set(fs, ELM_FILESELECTOR_GRID);
    elm_fileselector_buttons_ok_cancel_set(fs, EINA_FALSE);
-   elm_fileselector_path_set(fs, "/tmp");
+   elm_fileselector_path_set(fs, "/home/gabriel/imagens");
 
    evas_object_size_hint_weight_set(fs, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    evas_object_size_hint_align_set(fs, EVAS_HINT_FILL, EVAS_HINT_FILL);
