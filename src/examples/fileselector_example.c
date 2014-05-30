@@ -11,21 +11,18 @@
 
 #include <Elementary.h>
 
+/*  This callback make thumbnails if you click in a valid image file(jpg, jpeg, png)
+ */
 static void 
  thumb_generator(char *file, Evas_Object *th_win)
 {
-  Evas_Object *thumb, *image;
+  Evas_Object *thumb;
 
   char buf[PATH_MAX];
   snprintf(buf, sizeof(buf), "%s", file);
  
-  image = elm_image_add(th_win);
   thumb = elm_thumb_add(th_win);
-         
-  if (!elm_image_file_set(image, buf , NULL))
-   snprintf(buf, sizeof(buf), "%s","/usr/share/elementary/images/icon_06.png");
-
-   printf("PATH == %s\n\n", buf);
+  printf("PATH == %s\n\n", buf);
               
    elm_thumb_file_set(thumb, buf, NULL);
    elm_thumb_reload(thumb);
@@ -54,7 +51,6 @@ _fs_selected(void        *data,
              Evas_Object *obj,
              void        *event_info)
 {
-   Evas_Object *thumb;
    const char *selected = event_info;
    /* event_info contains the full path of the selected file */
    printf("There's been a selection: %s\n", selected);
