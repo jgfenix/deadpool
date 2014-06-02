@@ -211,6 +211,17 @@ static void
      printf("File selection canceled.\n");
   }
 
+static void
+  _selected_file(void *data, Evas_Object *win, char *path)
+   {
+      Evas_Object *thumb;
+      thumb = elm_thumb_add(win);
+      printf("PATH == %s\n", path);
+      elm_thumb_file_set(thumb, path, NULL);
+      elm_thumb_reload(thumb);
+      evas_object_show(thumb);
+   }   
+
 
 EAPI_MAIN int
 
@@ -229,7 +240,7 @@ elm_main(int argc, char **argv)
 
     thumb = elm_thumb_add(win);
          
-        elm_thumb_reload(thumb);
+    elm_thumb_reload(thumb);
     evas_object_smart_callback_add(thumb, "generate,start", _generation_started_cb, NULL);
     evas_object_smart_callback_add(thumb, "generate,stop", _generation_finished_cb, NULL);
     evas_object_smart_callback_add(thumb, "generate,error", _generation_error_cb, NULL);
@@ -247,14 +258,18 @@ elm_main(int argc, char **argv)
     elm_icon_standard_set(ic, "menu/folder");
     evas_object_show(ic);
   
-    fs_bt = elm_fileselector_button_add(win);
-    elm_fileselector_button_path_set(fs_bt, "/home");
+    fs_bt = elm_fileselector_add(win);
+    elm_fileselector_expandable_set(fs_bt, EINA_TRUE);
+    elm_fileselector_path_set(fs_bt, "/home");
     elm_object_text_set(fs_bt, "Select a file");
-    elm_object_part_content_set(fs_bt, "icon", ic);
+    evas_object_size_hint_weight_set(fs_bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(fs_bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_box_pack_end(box, fs_bt);
-    elm_fileselector_button_inwin_mode_set(fs_bt, EINA_TRUE);
+    //elm_fileselector_button_inwin_mode_set(fs_bt, EINA_TRUE);
+    evas_object_smart_callback_add(fs_bt, "selected", _selected_file, win);
+    evas_object_smart_callback_add(fs_bt, "done", _file_chosen, en);
     evas_object_show(fs_bt);
- 
+    
     en = elm_entry_add(win);
     elm_entry_line_wrap_set(en, EINA_FALSE);
     elm_entry_editable_set(en, EINA_FALSE);
