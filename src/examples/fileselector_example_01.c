@@ -95,7 +95,7 @@ static void
    };
 }
 
-/*  callback to show images selected by button fs_bt  */
+/*  callback to show images selected by button fs  */
 static void
    _file_chosen(void *data, Evas_Object *obj, void *selected_item)
  {  
@@ -168,7 +168,7 @@ EAPI_MAIN int
 
 elm_main(int argc, char **argv)
 {
-   Evas_Object *thumb, *box, *ic, *fs_bt, *en = NULL ;
+   Evas_Object *thumb, *ic, *fs, *en = NULL ;
    
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
   
@@ -189,45 +189,32 @@ elm_main(int argc, char **argv)
     elm_panes_content_right_size_set(panes, 0.4);
     evas_object_show(panes);
 
-   /*win it's the window that will show images */
-    
-   
     thumb = elm_thumb_add(winM);
-         
     elm_thumb_reload(thumb);
     
-    box = elm_box_add(winM);
-    elm_box_horizontal_set(box, EINA_TRUE);
-    evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND); 
-    elm_win_resize_object_add(winM, box);
-    elm_box_padding_set(box, 1, 1);
-    elm_box_homogeneous_set(box,EINA_TRUE);
-    evas_object_show(box);
-   
     ic = elm_icon_add(winM);
     elm_icon_order_lookup_set(ic, ELM_ICON_LOOKUP_THEME_FDO);
     elm_icon_standard_set(ic, "menu/folder");
     evas_object_show(ic);
   
-    fs_bt = elm_fileselector_add(winM);
-    elm_fileselector_expandable_set(fs_bt, EINA_TRUE);
-    elm_fileselector_path_set(fs_bt, "/home");
-    elm_object_text_set(fs_bt, "Select a file");
-    evas_object_size_hint_weight_set(fs_bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(fs_bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    fs = elm_fileselector_add(winM);
+    elm_fileselector_expandable_set(fs, EINA_TRUE);
+    elm_fileselector_path_set(fs, "/home");
+    elm_object_text_set(fs, "Select a file");
+    evas_object_size_hint_weight_set(fs, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(fs, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    evas_object_smart_callback_add(fs_bt, "selected", _selected_file, NULL);
-    evas_object_smart_callback_add(fs_bt, "done", _file_chosen, NULL);
-    evas_object_show(fs_bt);
+    evas_object_smart_callback_add(fs, "selected", _selected_file, NULL);
+    evas_object_smart_callback_add(fs, "done", _file_chosen, NULL);
+    evas_object_show(fs);
     
     en = elm_entry_add(winM);
     elm_entry_line_wrap_set(en, EINA_FALSE);
     elm_entry_editable_set(en, EINA_FALSE);
-    evas_object_smart_callback_add(fs_bt, "file,chosen", _file_chosen, en);
-    elm_box_pack_end(box, en);
+    evas_object_smart_callback_add(fs, "file,chosen", _file_chosen, en);
     evas_object_show(en);
 
-    elm_object_part_content_set(panes, "left", fs_bt);
+    elm_object_part_content_set(panes, "left", fs);
    
     elm_run();
    elm_shutdown();
