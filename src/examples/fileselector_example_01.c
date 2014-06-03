@@ -1,7 +1,11 @@
 /*
- * If you choose an image file(jpg, jpeg, png), this widget will show it in an independet window,
+ * Elementary's file selector example to show yhumbnails and images.
+ *
+ * If you select an image file(jpg, jpeg, png), a thumbnail will be displayed on the right
+ * side of the winM, if you choose an image file, this widget will show it in an independet window,
  * if you choose a folder, the widget will scan the folder and create a roll of thumbnails buttons with
  * the files, if it's not a image file, a generic thumbnail will be displayed
+ *
 */ 
 
 #include <Elementary.h>
@@ -95,11 +99,16 @@ static void
 static void
    _file_chosen(void *data, Evas_Object *obj, void *selected_item)
  {  
+    
+   evas_object_del(win);//delete previous window and make another to show other images
+   
    Evas_Object  *image;
    char *file = selected_item;  
    int w, h, hg;
    
-   elm_win_title_set(win, file);
+   win = elm_win_util_standard_add("image",file);
+   elm_win_autodel_set(win, EINA_TRUE);
+   evas_object_resize(win, 500, 500);
    
    if (file != NULL)
      {   
@@ -127,8 +136,8 @@ static void
                 elm_image_resizable_set(image, EINA_TRUE, EINA_TRUE);
                 elm_image_smooth_set(image, EINA_TRUE);
                 elm_image_orient_set(image, ELM_IMAGE_ORIENT_NONE);
-                elm_image_aspect_fixed_set(image, EINA_FALSE);
-                elm_image_fill_outside_set(image, EINA_TRUE);
+                elm_image_aspect_fixed_set(image, EINA_TRUE);
+                elm_image_fill_outside_set(image, EINA_FALSE);
                 elm_image_editable_set(image, EINA_TRUE);
                 evas_object_size_hint_weight_set(image, EVAS_HINT_FILL, EVAS_HINT_FILL);
            
@@ -159,7 +168,7 @@ EAPI_MAIN int
 
 elm_main(int argc, char **argv)
 {
-   Evas_Object *thumb, *box, *ic, *fs_bt, *en ;
+   Evas_Object *thumb, *box, *ic, *fs_bt, *en = NULL ;
    
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
   
@@ -182,10 +191,7 @@ elm_main(int argc, char **argv)
 
    /*win it's the window that will show images */
     
-    win = elm_win_util_standard_add("image",NULL);
-    elm_win_autodel_set(win, EINA_TRUE);
-    evas_object_resize(win, 500, 500);
-
+   
     thumb = elm_thumb_add(winM);
          
     elm_thumb_reload(thumb);
@@ -209,8 +215,9 @@ elm_main(int argc, char **argv)
     elm_object_text_set(fs_bt, "Select a file");
     evas_object_size_hint_weight_set(fs_bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(fs_bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_smart_callback_add(fs_bt, "selected", _selected_file,NULL);
-    evas_object_smart_callback_add(fs_bt, "done", _file_chosen, en);
+
+    evas_object_smart_callback_add(fs_bt, "selected", _selected_file, NULL);
+    evas_object_smart_callback_add(fs_bt, "done", _file_chosen, NULL);
     evas_object_show(fs_bt);
     
     en = elm_entry_add(winM);
