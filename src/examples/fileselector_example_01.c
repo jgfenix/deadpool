@@ -1,5 +1,5 @@
 /*
- * Elementary's file selector example to show yhumbnails and images.
+ * Elementary's file selector example to show thumbnails and images.
  *
  * If you select an image file(jpg, jpeg, png), a thumbnail will be displayed on the right
  * side of the winM, if you choose an image file, this widget will show it in an independet window,
@@ -10,6 +10,10 @@
 
 #include <Elementary.h>
 Evas_Object *panes, *winM, *win;
+
+static const char generic_thumb[] = "/usr/share/elementary/images/icon_06.png";
+
+static char *bt_hold_thumb;//hold the file when you selected a image
 
 static void
    _file_chosen(void *data, Evas_Object *obj, void *selected_item);
@@ -26,9 +30,9 @@ static void
           evas_object_del(event_info);
   }
 
-/*   callback to list a path from file_chosen: if it's a path, it will test if the
- *   files inside the path are images and create the thumbnails buttons in window th_win
- */
+/*   Callback to list a path from file_chosen
+ *   If it's a path, it will test if the files inside the path are 
+ *   images and create thumbnails buttons in window th_win */
 static void 
  list(char *folder)
 {
@@ -73,9 +77,10 @@ static void
 
         thumb = elm_thumb_add(th_win);
      
-/*this if will test if the path in 'buf' is an image, if not, it will change the path to a generic image*/        
+/* this if will test if the path in 'buf' is an image, if not, it will change 
+   the path to generic_thumb*/        
         if (!elm_image_file_set(image, buf, NULL))
-            snprintf(buf, sizeof(buf), "%s","/usr/share/elementary/images/icon_06.png");
+            snprintf(buf, sizeof(generic_thumb), "%s",generic_thumb);
         printf("PATH == %s\n\n", buf);
               
         elm_thumb_editable_set(thumb, EINA_FALSE);
@@ -95,15 +100,25 @@ static void
    };
 }
 
-/*  callback to show images selected by button fs  */
+/*  Callback to show image chosen by button fs
+ *  This callback receives a path from fs_bt and test if it's a image or folder.
+ *  If it's a folder, list(*file) is called and will make a roll of thumbnails in 
+ *  another independent window with the content of folder.
+ *  If it's a valid image, it will show the image in another independent window   */
 static void
    _file_chosen(void *data, Evas_Object *obj, void *selected_item)
  {  
-    
    evas_object_del(win);//delete previous window and make another to show other images
    
    Evas_Object  *image;
-   char *file = selected_item;  
+   char *file = NULL;
+
+   if(selected_item == NULL)
+     {
+        if (bt_hold_thumb != NULL)
+         file = bt_hold_thumb;
+     }
+   else file = selected_item;
    int w, h, hg;
    
    win = elm_win_util_standard_add("image",file);
@@ -112,12 +127,16 @@ static void
    
    if (file != NULL)
      {   
-        image = elm_image_add(win);
+       image = elm_image_add(win);
           
        if (!elm_image_file_set(image, file, NULL))
         {
-          printf("\nerror: could not load image \"%s\"\n", file);
-          list(file);
+          
+          if(opendir(file) != NULL)
+            list(file);
+          
+          else
+            printf("\nerror: could not load image \"%s\"\n", file);
         }
        else 
          {
@@ -151,16 +170,33 @@ static void
      printf("File selection canceled.\n");
  }
 
+/*  Callback to show thumbnails on the right of window 
+ *  This callback receives a path from fs_bt and make a thumbnail button
+ *  that can be clicked to show the image */    
 static void
   _selected_file(void *data, Evas_Object *obj, char *path)
  {
-   Evas_Object *thumb;
+   bt_hold_thumb = path;
+
+   Evas_Object *thumb, *bt, *image;
    thumb = elm_thumb_add(obj);
    printf("PATH == %s\n", path);
-   elm_thumb_file_set(thumb, path, NULL);
+
+   image = elm_image_add(obj);
+ 
+   if(!elm_image_file_set(image, path, NULL)) 
+      elm_thumb_file_set(thumb, generic_thumb, NULL);
+   else
+     elm_thumb_file_set(thumb,path, NULL);
+   
    elm_thumb_reload(thumb);
-   evas_object_show(thumb);
-   elm_object_part_content_set(panes, "right", thumb);
+   
+   bt = elm_button_add(obj);
+   elm_object_part_content_set(bt, "icon", thumb);
+   evas_object_smart_callback_add(bt, "clicked", _file_chosen , NULL);
+   evas_object_show(bt);
+   
+   elm_object_part_content_set(panes, "right", bt);
  }   
 
 
@@ -179,14 +215,13 @@ elm_main(int argc, char **argv)
     winM = elm_win_util_standard_add("image/thumb", "Image_&_Thumb_Generator");
     evas_object_smart_callback_add(winM, "delete,request", exit_cb, NULL);
     elm_win_autodel_set(winM, EINA_TRUE);
-    evas_object_resize(winM, 600, 800);
+    evas_object_resize(winM, 500, 600);
     evas_object_show(winM);
     
     panes = elm_panes_add(winM);
     evas_object_size_hint_weight_set(panes, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_win_resize_object_add(winM, panes);
     elm_panes_horizontal_set(panes, EINA_FALSE);
-    elm_panes_content_right_size_set(panes, 0.4);
     evas_object_show(panes);
 
     thumb = elm_thumb_add(winM);
@@ -221,4 +256,5 @@ elm_main(int argc, char **argv)
    return 0;
 }
  ELM_MAIN()
+
 
