@@ -3,9 +3,6 @@
 
 static Evas_Object *in_win ;
 
-//static char *file;
-
-
 static void//exit
   exit_program(void *data, Evas_Object *obj, void *event_info)
   {
@@ -53,7 +50,6 @@ static void//inwin mode 'on' to show the content of app button
     evas_object_size_hint_min_set(bt, 80, 50); 
     elm_box_pack_end(inw_box, bt);
     evas_object_show(bt);
-    //evas_object_smart_callback_add(bt, "clicked", kill_bt, NULL);
  
     ic = elm_icon_add(win);
     elm_icon_order_lookup_set(ic, ELM_ICON_LOOKUP_THEME_FDO);
