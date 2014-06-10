@@ -1,3 +1,4 @@
+
 #include <Elementary.h>
 
 static Evas_Object *in_win ;
@@ -26,7 +27,7 @@ static void//inwin mode 'on' to show the content of app button
     win = elm_object_top_widget_get(previous_win);//get the previous window as parameter
       
     in_win = elm_win_inwin_add(win); 
-    elm_win_inwin_activate(in_win);//evas_object_show(in_win);
+    elm_win_inwin_activate(in_win);//or evas_object_show(in_win);
        
     inw_box = elm_box_add(win);
     elm_box_horizontal_set(inw_box, EINA_TRUE);
@@ -122,6 +123,47 @@ static void
      printf("File selection canceled.\n");
   }
   
+static void //a window that you can write
+  text_set(void *data, Evas_Object *obj, void *event_info)
+{
+    Evas_Object *win, *btn, *bx, *en;
+
+   win = elm_win_util_standard_add("window_to_write_button", "Write");
+   elm_win_autodel_set(win, EINA_TRUE);
+
+   bx = elm_box_add(win);
+   evas_object_size_hint_weight_set(bx, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   elm_win_resize_object_add(win, bx);
+   evas_object_show(bx);
+
+   en = elm_entry_add(win);
+   elm_entry_scrollable_set(en, EINA_TRUE);
+   elm_object_text_set(en,
+                       "This is a multi-line entry at the bottom<br>"
+                       "This can contain more than 1 line of text and be "
+                       "scrolled around to allow for entering of lots of "
+                       "content. It is also to test to see that autoscroll "
+                       "moves to the right part of a larger multi-line "
+                       "text entry that is inside of a scroller than can be "
+                       "scrolled around, thus changing the expected position "
+                       "as well as cursor changes updating auto-scroll when "
+                       "it is enabled.");
+
+   evas_object_size_hint_weight_set(en, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   evas_object_size_hint_align_set(en, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   evas_object_show(en);
+   elm_box_pack_end(bx, en);
+
+   btn = elm_button_add(win);
+   elm_object_text_set(btn, "no_fuction_button");
+   evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND, 0);
+   evas_object_size_hint_align_set(btn, EVAS_HINT_FILL, 0);
+   elm_box_pack_end(bx, btn);
+   evas_object_show(btn);
+
+   evas_object_resize(win, 240, 480);
+   evas_object_show(win);
+}
 
 static void//second naviframe 
   n_frame_2(void *data, Evas_Object *obj, void *event_info)
@@ -147,6 +189,7 @@ static void//second naviframe
    elm_box_pack_end(nv_box, bt);
    evas_object_size_hint_min_set(bt, 280, 280);
    evas_object_show(bt);
+   evas_object_smart_callback_add(bt, "clicked", text_set, NULL);
 
    b_exit = elm_button_add(nv);
    elm_object_text_set(b_exit, " EXIT ");
@@ -155,8 +198,6 @@ static void//second naviframe
    evas_object_smart_callback_add(b_exit, "clicked", exit_program, NULL);
 
   elm_naviframe_item_push(nv, NULL, NULL, NULL, nv_box, NULL);
-   
-  //evas_object_smart_callback_add(b_next, "clicked", n_frame_3, nv);
    }
   }
 
@@ -225,7 +266,7 @@ elm_main(int argc, char **argv)
 {
    Evas_Object *win, *nv, *box, *app_box, *_clock, *ic, *b_next, *b_exit, *b_app, *image ;
   
-   char buf[PATH_MAX] = "/home/gabriel/app_store.png";//icon app store from Google
+   char buf[PATH_MAX] = "/usr/local/share/elementary/images/logo.png";
 
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
 
@@ -298,16 +339,12 @@ elm_main(int argc, char **argv)
    elm_image_aspect_fixed_set(image, EINA_TRUE);
    elm_image_fill_outside_set(image, EINA_FALSE);
    elm_image_editable_set(image, EINA_TRUE);
-
-   // evas_object_size_hint_weight_set(image, EVAS_HINT_FILL, EVAS_HINT_FILL);
    evas_object_show(image);
 
    b_app = elm_button_add(nv);
-   elm_object_text_set(b_app, "APPS");
+   elm_object_text_set(b_app, " CLICK ME");
    elm_object_part_content_set(b_app,"icon", image);
    elm_box_pack_end(app_box, b_app);
-   //evas_object_size_hint_min_set(b_app, 100, 100); 
-   //evas_object_resize(b_app, 100, 100);
    evas_object_show(b_app);
    elm_win_resize_object_add(b_app, image);
    evas_object_smart_callback_add(b_app, "clicked", b_inw_cb, win);
@@ -320,4 +357,5 @@ elm_main(int argc, char **argv)
  return 0;
 }
  ELM_MAIN()
+
 

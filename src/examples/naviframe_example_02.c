@@ -101,7 +101,55 @@ static void//make 'buttons' with File and print the name file in terminal
    else
      printf("File selection canceled.\n");
   }
+static void
+  text_set(void *data, Evas_Object *obj, void *event_info)
+{
+    Evas_Object *win, *btn, *en;
 
+   win = elm_win_util_standard_add("conformant", "Conformant Example");
+   elm_win_autodel_set(win, EINA_TRUE);
+
+   bx = elm_box_add(win);
+   evas_object_size_hint_weight_set(bx, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   elm_win_resize_object_add(win, bx);
+   evas_object_show(bx);
+
+   btn = elm_button_add(win);
+   elm_object_text_set(btn, "Test Conformant");
+   evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND, 0);
+   evas_object_size_hint_align_set(btn, EVAS_HINT_FILL, 0);
+   elm_box_pack_end(bx, btn);
+   evas_object_show(btn);
+
+   en = elm_entry_add(win);
+   elm_entry_scrollable_set(en, EINA_TRUE);
+   elm_object_text_set(en,
+                       "This is a multi-line entry at the bottom<br>"
+                       "This can contain more than 1 line of text and be "
+                       "scrolled around to allow for entering of lots of "
+                       "content. It is also to test to see that autoscroll "
+                       "moves to the right part of a larger multi-line "
+                       "text entry that is inside of a scroller than can be "
+                       "scrolled around, thus changing the expected position "
+                       "as well as cursor changes updating auto-scroll when "
+                       "it is enabled.");
+
+   evas_object_size_hint_weight_set(en, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   evas_object_size_hint_align_set(en, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   evas_object_show(en);
+   elm_box_pack_end(bx, en);
+
+   btn = elm_button_add(win);
+   elm_object_text_set(btn, "Test Conformant");
+   evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND, 0);
+   evas_object_size_hint_align_set(btn, EVAS_HINT_FILL, 0);
+   elm_box_pack_end(bx, btn);
+   evas_object_show(btn);
+
+   evas_object_resize(win, 240, 480);
+   evas_object_show(win);
+}
+ 
 static void//second naviframe 
   n_frame_2(void *data, Evas_Object *obj, void *event_info)
   {
@@ -126,7 +174,8 @@ static void//second naviframe
    elm_box_pack_end(nv_box, bt);
    evas_object_size_hint_min_set(bt, 100, 100);
    evas_object_show(bt);
-
+   evas_object_smart_callback_add(bt, "clicked", text_set, NULL);
+  
    b_exit = elm_button_add(nv);
    elm_object_text_set(b_exit, " EXIT ");
    elm_box_pack_end(nv_box, b_exit);

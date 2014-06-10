@@ -13,7 +13,7 @@ Evas_Object *panes, *winM, *win;
 
 static const char generic_thumb[] = "/usr/share/elementary/images/icon_06.png";
 
-static char *bt_hold_thumb;//hold the file when you selected a image
+static char *bt_hold_thumb;//hold the file when you select an image
 
 static void
    _file_chosen(void *data, Evas_Object *obj, void *selected_item);
