@@ -143,8 +143,10 @@ scroller_example_01.c \
 table_example_01.c \
 table_example_02.c \
 theme_example.edc \
+theme_jg.edc \
 theme_example_01.c \
 theme_example_02.c \
+theme_jg.c \
 thumb_example_01.c \
 toolbar_example_01.c \
 toolbar_example_02.c \
@@ -175,6 +177,7 @@ files_DATA += \
 	prefs_example_03.epb \
 	prefs_example_03.edj \
 	theme_example.edj \
+	theme_jg.edj \
 	layout_example.edj\
 	codegen_example.edj
 
@@ -289,6 +292,7 @@ table_example_01 \
 table_example_02 \
 theme_example_01 \
 theme_example_02 \
+theme_jg \
 thumb_example_01 \
 toolbar_example_01 \
 toolbar_example_02 \
@@ -419,4 +423,4 @@ screenshots:
 
 endif
 
-EXTRA_DIST = dict.txt layout_example.edc theme_example.edc codegen_example.edc
+EXTRA_DIST = dict.txt layout_example.edc theme_example.edc codegen_example.edc theme_jg.edc
