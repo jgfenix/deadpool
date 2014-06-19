@@ -206,6 +206,7 @@ elm_main(int argc, char **argv)
 {
    Evas_Object *thumb, *ic, *fs, *en = NULL ;
    
+elm_theme_overlay_add(NULL, "./theme_example.edj");
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);  
   
     elm_need_ethumb();

@@ -41,14 +41,14 @@ static Evas_Object *create_my_group(Evas *canvas, const char *text)
    return edje;
 }
 
-EAPI_MAIN int
-elm_main(int argc, char *argv[])
-{
+int main(int argc, char *argv[])
+{ 
+printf("\nARGC = %d\n",argc);
+printf("\nARGV[1] = %s\n",argv[1]);
    Ecore_Evas *window;
    Evas *canvas;
-   Evas_Object *edje;//, *bg, *win;
+   Evas_Object *edje;
    const char *text;
-  // char buf[PATH_MAX];
   
    ecore_evas_init();
    edje_init();
@@ -69,34 +69,13 @@ elm_main(int argc, char *argv[])
      return -2;
 
    ecore_evas_show(window);
-  
- /*  elm_app_info_set(elm_main, "elementary", "images/cube1.png");
-      
-   win = elm_win_add(NULL, "bg-image", ELM_WIN_BASIC);
-   elm_win_title_set(win, "Bg Image");
-   elm_win_autodel_set(win, EINA_TRUE);
-   evas_object_resize(win, WIDTH, HEIGHT);
-   evas_object_show(win);
-   
-   bg = elm_bg_add(win);
-   elm_bg_load_size_set(bg, 20, 20);
-   snprintf(buf, sizeof(buf), "%s/images/cube1.png", elm_app_data_dir_get());
-   elm_bg_file_set(bg, buf, NULL);
-   evas_object_size_hint_weight_set(bg, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-   elm_win_resize_object_add(win, bg);
-   evas_object_show(bg);      
-
-   elm_run();*/
-
    ecore_main_loop_begin();
    
-   evas_object_del(edje);
-   ecore_evas_free(window);
+  // evas_object_del(edje);
+  // ecore_evas_free(window);
 
-   //elm_shutdown();
    edje_shutdown();
    ecore_evas_shutdown();
  
    return 0;
 }
-ELM_MAIN()

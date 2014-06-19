@@ -1,6 +1,11 @@
 collections {
    group { name: "elm/button/base/chucknorris";
       alias: "elm/button/base/default";
+images{
+      image: "img.png" COMP;
+      image: "plant_01.png" COMP;
+   }
+
       parts {
          part { name: "border";
             type: RECT;
@@ -15,14 +20,15 @@ collections {
             type: RECT;
             mouse_events: 1;
             description { state: "default" 0.0;
-               rel1.to: "border";
+               color: 230 230 230 255;
+	       rel1.to: "border";
                rel1.offset: 1 1;
                rel2.to: "border";
                rel2.offset: -2 -2;
             }
             description { state: "disabled" 0.0;
                inherit: "default" 0.0;
-               color: 230 230 230 255;
+               color: 0 255 255 255;
             }
          }
          part { name: "elm.swallow.content";
@@ -64,7 +70,7 @@ collections {
                rel1.relative: 1.0 0.0;
                rel1.offset: 0 4;
                rel2.offset: -5 -5;
-               color: 0 0 0 255;
+               color: 0 0 200 255 ;
                text {
                   font: "Sans";
                   size: 10;
@@ -87,7 +93,21 @@ collections {
          }
       }
       programs {
-         program { name: "button_mouse_in";
+         {
+         program { name: "base_mouse_in";
+            signal: "mouse,in";
+            source: "base";
+            action: STATE_SET "disabled" 0.0;
+            target: "base";
+         }
+         program { name: "base_mouse_out";
+            signal: "mouse,out";
+            source: "base";
+            action: STATE_SET "default" 0.0;
+            target: "base";
+         }
+
+	program { name: "button_mouse_in";
             signal: "mouse,in";
             source: "base";
             action: STATE_SET "in" 0.0;

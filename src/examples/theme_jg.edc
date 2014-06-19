@@ -1,6 +1,6 @@
 collections {
    group {
-      name: "my_group"; // must be the same as in theme_jg.c
+      name: "my_group"; // must be the same as in theme.c
    images{
       image: "img.png" COMP;
       image: "plant_01.png" COMP;
@@ -10,7 +10,7 @@ collections {
          part {
             name: "background";
             type: RECT; // plain boring rectangle
-            mouse_events: 0; // we don't need any mouse event on the background
+            mouse_events: 1; // we don't need any mouse event on the background
 
             // just one state "default"
             description {
@@ -33,6 +33,7 @@ collections {
       {
 	name: "image";
 	type: IMAGE;
+	mouse_events: 1;// ==1 by default
 	description
 	 {
                 state: "default" 0.0;
@@ -52,7 +53,7 @@ collections {
       
      
       part {
-            name: "text";
+            name: "text";//must be the same name as in the theme.c
             type: TEXT;
             mouse_events: 1; // we want to change the color on mouse-over
 
@@ -62,9 +63,8 @@ collections {
             description {
                state: "default" 0.0;
                color: 255 0 0 255; // red
-
-               // define part coordinates:
-
+              
+		 // define part coordinates:
                rel1 { // top-left at (WIDTH * 0.1 + 5, HEIGHT * 0.2 + 10)
 
                   relative: 0.1 0.2;
@@ -95,21 +95,23 @@ collections {
  
         programs {
             program {
+	       name: "image_mouse_in";	
                signal: "mouse,in";
                source: "image";
 
                action: STATE_SET "state1" 0.0;
                target: "image";
-               transition: LINEAR 0.5;
+               transition: LINEAR 0.1;
 
             }
             program {
+	       name: "image_mouse_out";	
                signal: "mouse,out";
                source: "image";
 
                action: STATE_SET "default" 0.0;
                target: "image";
-               transition: LINEAR 0.5;
+               transition: LINEAR 0.1;
 
             }   
 
