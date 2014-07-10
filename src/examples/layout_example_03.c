@@ -44,8 +44,9 @@ elm_main(int argc, char **argv)
 {
    Evas_Object *win, *btn, *layout;
    char buf[PATH_MAX];
-
-   elm_app_info_set(elm_main, "elementary", "examples/layout_example.edj");
+   
+  // elm_app_info_set(elm_main, "elementary", "examples/layout_example.edj");
+   char my_dir[] = "/home/gabriel/src/elementary/src" ; //FIX 
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
 
    win = elm_win_util_standard_add("layout", "Layout Example");
@@ -55,7 +56,7 @@ elm_main(int argc, char **argv)
    layout = elm_layout_add(win);
    evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    elm_win_resize_object_add(win, layout);
-   snprintf(buf, sizeof(buf), "%s/examples/layout_example.edj", elm_app_data_dir_get());
+   snprintf(buf, sizeof(buf), "%s/examples/layout_example.edj",my_dir); //elm_app_data_dir_get());
    elm_layout_file_set(layout, buf, "example/mylayout3");
    evas_object_show(layout);
 

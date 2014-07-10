@@ -1,81 +1,107 @@
-#include<Elementary.h>
+//Compile with:
+//gcc -g genlist_example_01.c -o genlist_example_01 `pkg-config --cflags --libs elementary`
 
-#ifndef PACKAGE_DATA_DIR
-#define PACKAGE_DATA_DIR "."
-#endif
+#include <Elementary.h>
 
-#define WIDTH 300
-#define HEIGHT 300
+#define N_ITEMS 30
 
-static Evas_Object *create_my_group(Evas *canvas, const char *text)
+static Elm_Genlist_Item_Class *_itc = NULL;
+
+static char *
+_item_label_get(void *data, Evas_Object *obj, const char *part)
 {
-   Evas_Object *edje;
-   edje = edje_object_add(canvas);
-   if (!edje)
-     {
-        EINA_LOG_CRIT("could not create edje object!");
-        return NULL;
-     }
-	if (!edje_object_file_set(edje, "theme_jg.edj", "my_group"))
-    {
-       int err = edje_object_load_error_get(edje);
-       const char *errmsg = edje_load_error_str(err);
-      fprintf(stderr, "could not load 'group_name' from theme.edj: %s",
-       	errmsg);
- 
-       evas_object_del(edje);
-       return NULL;
-    }
+   char buf[256];
+   int i = (int)(long)data;
+   time_t t = (time_t)ecore_time_unix_get();
+   
 
-   if (text)
+   if (!strcmp(part, "elm.text")) {
+        snprintf(buf, sizeof(buf), "%s # %i", part,(int)(long)data);
+   }
 
-        if (!edje_object_part_text_set(edje, "text", text))
-          {
-             EINA_LOG_WARN("could not set the text. "
-                           "Maybe part 'text' does not exist?");
-          }
+   else if (!strcmp(part, "elm.text.sub")) {
+     snprintf(buf, sizeof(buf), "created at %s", ctime(&t));
+     buf[strlen(buf) - 1] = '\0';
 
-   evas_object_move(edje, 0, 0);
-   evas_object_resize(edje, WIDTH, HEIGHT);
-   evas_object_show(edje);
-   return edje;
+   }
+
+   else// (!strcmp(part, "elm.text.sub.2"))
+     snprintf(buf, sizeof(buf), "size ### %i", i);
+
+   return strdup(buf);
 }
 
-int main(int argc, char *argv[])
-{ 
-printf("\nARGC = %d\n",argc);
-printf("\nARGV[1] = %s\n",argv[1]);
-   Ecore_Evas *window;
-   Evas *canvas;
-   Evas_Object *edje;
-   const char *text;
-  
-   ecore_evas_init();
-   edje_init();
+static Evas_Object *
+_item_content_get(void *data, Evas_Object *obj, const char *part)
+{
+   Evas_Object *ic = elm_icon_add(obj);
 
-   window = ecore_evas_new(NULL, 0, 0, WIDTH, HEIGHT, NULL);
-   if (!window)
+   if (!strcmp(part, "elm.swallow.icon"))
+     elm_icon_standard_set(ic, "clock");
+
+   evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+   return ic;
+}
+
+static void
+_item_sel_cb(void *data, Evas_Object *obj, void *event_info)
+{
+   printf("sel item data [%p] on genlist obj [%p], item pointer [%p]\n",
+          data, obj, event_info);
+}
+
+EAPI_MAIN int
+elm_main(int argc, char **argv)
+{
+   Evas_Object *win;
+   //Evas_Object *layout;
+   Evas_Object *list;
+   int i;
+   //char my_dir[] = "/home/gabriel/src/elementary/src/examples/theme_jg.edj" ;
+
+   elm_theme_overlay_add(NULL, "./theme_jg.edj");
+
+   win = elm_win_util_standard_add("genlist", "Genlist_jg");
+   elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
+   elm_win_autodel_set(win, EINA_TRUE);
+
+   /*layout = elm_layout_add(win);
+   elm_layout_file_set(layout, my_dir, "elm/genlist/item/double_label/default");
+   evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   elm_win_resize_object_add(win, layout);
+   evas_object_show(layout);*/
+
+   if (!_itc)
      {
-        EINA_LOG_CRIT("could not create window.");
-        return -1;
+        _itc = elm_genlist_item_class_new();
+        _itc->item_style = "double_label";
+        _itc->func.text_get = _item_label_get;
+        _itc->func.content_get = _item_content_get;
+        _itc->func.state_get = NULL;
+        _itc->func.del = NULL;
      }
-   canvas = ecore_evas_get(window);
 
-   text = (argc > 1) ? argv[1] : NULL;
+   list = elm_genlist_add(win);
 
-	
-   edje = create_my_group(canvas, text);
-   if (!edje)
-     return -2;
+   for (i = 0; i < N_ITEMS; i++)
+     {
+        elm_genlist_item_append(list, _itc,
+                                (void *)(long)i, NULL,
+                                ELM_GENLIST_ITEM_NONE,
+                                _item_sel_cb, NULL);
+     }
 
-   ecore_evas_show(window);
-   ecore_main_loop_begin();
-   
-  // evas_object_del(edje);
-  // ecore_evas_free(window);
+   evas_object_size_hint_weight_set(list, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   elm_win_resize_object_add(win, list);
+   evas_object_show(list);
 
-   edje_shutdown();
-   ecore_evas_shutdown();
- 
+   evas_object_resize(win, 320, 320);
+   evas_object_show(win);
+
+   elm_run();
+   elm_shutdown();
+
    return 0;
 }
+ELM_MAIN()
+

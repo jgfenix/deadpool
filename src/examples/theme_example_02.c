@@ -21,7 +21,7 @@ elm_main(int argc, char *argv[])
 
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
 
-   elm_theme_overlay_add(NULL, "./theme_example.edj");
+   elm_theme_overlay_add(NULL, "./layout_example.edj");
 
    win = elm_win_util_standard_add("theme", "Theme example");
    elm_win_autodel_set(win, EINA_TRUE);

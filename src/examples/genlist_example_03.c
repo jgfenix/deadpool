@@ -77,7 +77,7 @@ elm_main(int argc, char **argv)
    Evas_Object *win, *box;
    Evas_Object *list;
 
-   win = elm_win_util_standard_add("genlist", "Genlist");
+   win = elm_win_util_standard_add("genlist", "Genlist_example_03");
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
    elm_win_autodel_set(win, EINA_TRUE);
 
@@ -101,11 +101,11 @@ elm_main(int argc, char **argv)
    _genlist_fill(list);
 
    list = _genlist_add(box);
-   elm_genlist_mode_set(list, ELM_LIST_LIMIT);
+   //elm_genlist_mode_set(list, ELM_LIST_LIMIT);
    _genlist_fill(list);
 
    list = _genlist_add(box);
-   elm_genlist_mode_set(list, ELM_LIST_COMPRESS);
+   //elm_genlist_mode_set(list, ELM_LIST_COMPRESS);
    _genlist_fill(list);
 
    evas_object_resize(win, 800, 320);

@@ -40,7 +40,9 @@ elm_main(int argc, char **argv)
    Evas_Object *win;
    Evas_Object *list;
    int i;
-
+   
+   elm_theme_overlay_add(NULL, "./theme_jg.edj");
+ 
    win = elm_win_util_standard_add("genlist", "Genlist");
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
    elm_win_autodel_set(win, EINA_TRUE);
