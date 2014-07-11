@@ -18,7 +18,7 @@ _item_label_get(void *data, Evas_Object *obj, const char *part)
    if (!strcmp(part, "elm.text")) {
         snprintf(buf, sizeof(buf), "%s # %i", part,(int)(long)data);
    }
-
+   
    else if (!strcmp(part, "elm.text.sub")) {
      snprintf(buf, sizeof(buf), "created at %s", ctime(&t));
      buf[strlen(buf) - 1] = '\0';
@@ -48,6 +48,12 @@ _item_sel_cb(void *data, Evas_Object *obj, void *event_info)
 {
    printf("sel item data [%p] on genlist obj [%p], item pointer [%p]\n",
           data, obj, event_info);
+    printf("** %s \n ",evas_object_name_get(data));
+   /*if (!strcmp(part, "elm.text")) {
+        snprintf(buf, sizeof(buf), "%s # %i", part,(int)(long)data);
+   }*/
+
+
 }
 
 EAPI_MAIN int
@@ -59,7 +65,7 @@ elm_main(int argc, char **argv)
    int i;
    //char my_dir[] = "/home/gabriel/src/elementary/src/examples/theme_jg.edj" ;
 
-   elm_theme_overlay_add(NULL, "./theme_jg.edj");
+  // elm_theme_overlay_add(NULL, "./theme_jg.edj");
 
    win = elm_win_util_standard_add("genlist", "Genlist_jg");
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
@@ -74,7 +80,7 @@ elm_main(int argc, char **argv)
    if (!_itc)
      {
         _itc = elm_genlist_item_class_new();
-        _itc->item_style = "double_label";
+        _itc->item_style = "jg_double_label";
         _itc->func.text_get = _item_label_get;
         _itc->func.content_get = _item_content_get;
         _itc->func.state_get = NULL;
