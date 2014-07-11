@@ -245,7 +245,6 @@ collections {
             color: 0 0 0 128;
             color3: 0 0 0 0;
             text {
-               text:"ceteris paribus";
                font: "Sans";
                size: 10;
                min: 1 1;
