@@ -48,23 +48,37 @@ _item_sel_cb(void *data, Evas_Object *obj, void *event_info)
           data, obj, event_info);
 }
 
+static void _part_info(void *data, Evas_Object *o, void *event_info)
+{
+   Evas_Object *list = data;
+   Elm_Object_Item *glit = elm_genlist_selected_item_get(list);
+
+   printf("\nSelected item pointer = %p\n",glit);
+}
+
 EAPI_MAIN int
 elm_main(int argc, char **argv)
 {
    Evas_Object *win;
    Evas_Object *list;
+      Evas_Object *box, *hbox, *btn;
    int i;
 
-  // elm_theme_overlay_add(NULL, "./theme_jg.edj");
+   elm_theme_overlay_add(NULL, "./theme_jg.edj");
 
    win = elm_win_util_standard_add("genlist", "Genlist_jg");
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
    elm_win_autodel_set(win, EINA_TRUE);
-
-   if (!_itc)
+  
+   box = elm_box_add(win);
+   evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   elm_win_resize_object_add(win, box);
+   evas_object_show(box);
+   
+      if (!_itc)
      {
         _itc = elm_genlist_item_class_new();
-        _itc->item_style = "jg_double_label";
+        _itc->item_style = "double_label";//jg_double_label
         _itc->func.text_get = _item_label_get;
         _itc->func.content_get = _item_content_get;
         _itc->func.state_get = NULL;
@@ -82,9 +96,31 @@ elm_main(int argc, char **argv)
      }
 
    evas_object_size_hint_weight_set(list, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-   elm_win_resize_object_add(win, list);
+      //elm_win_resize_object_add(win, list);  
+   evas_object_size_hint_align_set(list, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+   elm_box_pack_end(box, list);
    evas_object_show(list);
 
+   hbox = elm_box_add(win);
+   elm_box_horizontal_set(hbox, EINA_TRUE);
+   evas_object_size_hint_weight_set(hbox, EVAS_HINT_EXPAND, 0);
+   evas_object_size_hint_align_set(hbox, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   elm_box_pack_end(box, hbox);
+   evas_object_show(hbox);
+  
+
+   
+   btn = elm_button_add(win);
+   elm_object_text_set(btn, "part information");
+   evas_object_size_hint_weight_set(btn, 0, 0);
+   evas_object_size_hint_align_set(btn, 0.5, 0.5);
+   evas_object_smart_callback_add(btn, "clicked", _part_info, list);
+   elm_box_pack_end(hbox, btn);
+   evas_object_show(btn);
+
+   
+   evas_object_show(btn);
    evas_object_resize(win, 320, 320);
    evas_object_show(win);
 
