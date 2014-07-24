@@ -49,7 +49,7 @@ _elm_fileselector_button_smart_theme(Eo *obj, void *_pd EINA_UNUSED, va_list *li
 
    style = eina_stringshare_add(elm_widget_style_get(obj));
 
-   snprintf(buf, sizeof(buf), "fileselector_button/%s", style);
+   snprintf(buf, sizeof(buf), "**fileselector_button/%s", style);
 
    /* file selector button's style has an extra bit */
    eina_stringshare_replace(&(wd->style), buf);
@@ -324,6 +324,8 @@ elm_fileselector_button_path_set(Evas_Object *obj,
 {
    ELM_FILESELECTOR_BUTTON_CHECK(obj);
    eo_do(obj, elm_obj_fileselector_button_path_set(path));
+   
+   elm_need_ethumb();
 }
 
 static void
