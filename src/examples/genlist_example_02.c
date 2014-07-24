@@ -33,8 +33,15 @@ _item_content_get(void *data, Evas_Object *obj, const char *part)
 
    if (!strcmp(part, "elm.swallow.icon"))
      elm_icon_standard_set(ic, "clock");
+   evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);  
 
-   evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+   evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);  
+ 
+   if (!strcmp(part, "elm.swallow.end"))
+     elm_icon_standard_set(ic, "clock");
+
+   evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);  
+
    return ic;
 }
 

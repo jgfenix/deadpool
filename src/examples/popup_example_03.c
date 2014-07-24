@@ -13,7 +13,7 @@ elm_main(int argc, char **argv)
    Elm_Object_Item *popup_it1;
    char buf[256];
 
-   elm_app_info_set(elm_main, "elementary", "images/logo_small.png");
+   elm_app_info_set(elm_main, "elementary", "images/logo_small.jpg");
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
 
    win = elm_win_util_standard_add("popup", "Popup");
@@ -22,7 +22,7 @@ elm_main(int argc, char **argv)
    popup = elm_popup_add(win);
 
    icon1 = elm_icon_add(popup);
-   snprintf(buf, sizeof(buf), "%s/images/logo_small.png", elm_app_data_dir_get());
+   snprintf(buf, sizeof(buf), "%s/images/logo_small.jpg", elm_app_data_dir_get());
    elm_image_file_set(icon1, buf, NULL);
 
    //Seting popup title-text

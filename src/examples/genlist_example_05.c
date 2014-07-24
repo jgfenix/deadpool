@@ -3,7 +3,7 @@
 
 #include <Elementary.h>
 
-#define N_ITEMS 6
+#define N_ITEMS 20
 
 typedef struct _Node_Data {
      Eina_List *children;
@@ -309,6 +309,7 @@ elm_main(int argc, char **argv)
    Evas_Object *list;
    int i;
 
+  elm_theme_overlay_add(NULL, "./theme_jg.edj");
    win = elm_win_util_standard_add("genlist", "Genlist");
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
    elm_win_autodel_set(win, EINA_TRUE);
@@ -341,7 +342,7 @@ elm_main(int argc, char **argv)
    if (!_itfav)
      {
         _itfav = elm_genlist_item_class_new();
-        _itfav->item_style = "default";
+        _itfav->item_style = "double_label";
         _itfav->func.text_get = _favorite_label_get;
         _itfav->func.content_get = _favorite_content_get;
         _itfav->func.state_get = NULL;

@@ -4,18 +4,30 @@
 #include <Elementary.h>
 
 #define N_ITEMS 30
+#define _size 256
+typedef struct _Node_Data {
+     int value;
+     Eina_Bool favorite;
+     char text[_size];
+     Evas_Object *_icon;
+} Node_Data;
 
 static Elm_Genlist_Item_Class *_itc = NULL;
+//static Elm_Genlist_Item_Class *_itci = NULL;
+static int nitems = 0;
 
 static char *
 _item_label_get(void *data, Evas_Object *obj, const char *part)
 {
-   char buf[256];
+   Node_Data *d = data;
+   
+   char buf[_size];
    int i = (int)(long)data;
    time_t t = (time_t)ecore_time_unix_get();
 
    if (!strcmp(part, "elm.text")) {
-        snprintf(buf, sizeof(buf), "%s # %i", part,(int)(long)data);
+        snprintf(buf, sizeof(buf), "%s # %i", part, d->value);
+        snprintf(d->text, sizeof(d->text), buf); //WARNING 
    }
    
    else if (!strcmp(part, "elm.text.sub")) {
@@ -32,13 +44,17 @@ _item_label_get(void *data, Evas_Object *obj, const char *part)
 static Evas_Object *
 _item_content_get(void *data, Evas_Object *obj, const char *part)
 {
-   Evas_Object *ic = elm_icon_add(obj);
+   Node_Data *d = data;
+   
+  // Evas_Object *ic =d->_icon;
+   d->_icon = elm_icon_add(obj);
 
    if (!strcmp(part, "elm.swallow.icon"))
-     elm_icon_standard_set(ic, "clock");
+     elm_icon_standard_set(d->_icon, "clock");
 
-   evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
-   return ic;
+   evas_object_size_hint_aspect_set(d->_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+   
+    return d->_icon;
 }
 
 static void
@@ -46,25 +62,57 @@ _item_sel_cb(void *data, Evas_Object *obj, void *event_info)
 {
    printf("sel item data [%p] on genlist obj [%p], item pointer [%p]\n",
           data, obj, event_info);
+
 }
 
 static void _part_info(void *data, Evas_Object *o, void *event_info)
 {
+/*Evas_Object *list = data;
+   Elm_Object_Item *glit = elm_genlist_selected_item_get(list);
+   printf("\nSelected item pointer = %p\n",event_info);*/
+
    Evas_Object *list = data;
    Elm_Object_Item *glit = elm_genlist_selected_item_get(list);
 
-   printf("\nSelected item pointer = %p\n",glit);
+   Node_Data *d = elm_object_item_data_get(glit);
+   printf("\n%s ", d->text);
+   if(!d->favorite){
+     printf("not favorite yet..\n");
+     d->favorite = EINA_TRUE;
+     printf("now is favorite\n");
+   }
+   else
+     printf("already favorited\n");
+      
+   d->_icon = elm_icon_add(o);
+   elm_icon_standard_set(d->_icon, "apps");
+   
+   evas_object_size_hint_aspect_set(d->_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+   elm_genlist_item_item_class_update(glit, _itc);
+   elm_genlist_item_update(glit);
+   
+   if(!d->_icon)
+     printf("ICON NULL\n");
+
+   /*if (!glit) return;
+
+   d->favorite = !d->favorite;
+   if (d->favorite)
+     elm_genlist_item_item_class_update(glit, _itc);
+   
+   elm_genlist_item_update(glit);*/
+
 }
 
 EAPI_MAIN int
 elm_main(int argc, char **argv)
 {
-   Evas_Object *win;
-   Evas_Object *list;
-      Evas_Object *box, *hbox, *btn;
-   int i;
+  Evas_Object *win;
+  Evas_Object *list;
+  Evas_Object *box, *hbox, *btn;
+  int i;
 
-   elm_theme_overlay_add(NULL, "./theme_jg.edj");
+  elm_theme_overlay_add(NULL, "./theme_jg.edj");
 
    win = elm_win_util_standard_add("genlist", "Genlist_jg");
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
@@ -78,25 +126,29 @@ elm_main(int argc, char **argv)
       if (!_itc)
      {
         _itc = elm_genlist_item_class_new();
-        _itc->item_style = "double_label";//jg_double_label
+        _itc->item_style = "double_label";
         _itc->func.text_get = _item_label_get;
         _itc->func.content_get = _item_content_get;
         _itc->func.state_get = NULL;
         _itc->func.del = NULL;
      }
 
-   list = elm_genlist_add(win);
 
+   list = elm_genlist_add(win);
+   
    for (i = 0; i < N_ITEMS; i++)
      {
-        elm_genlist_item_append(list, _itc,
-                                (void *)(long)i, NULL,
+        Node_Data *data = malloc(sizeof(*data)); // data for this item
+        data->value = i;
+        data->favorite = EINA_FALSE;
+        nitems++;
+
+        elm_genlist_item_append(list, _itc, data, NULL,
                                 ELM_GENLIST_ITEM_NONE,
                                 _item_sel_cb, NULL);
      }
 
    evas_object_size_hint_weight_set(list, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-      //elm_win_resize_object_add(win, list);  
    evas_object_size_hint_align_set(list, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
    elm_box_pack_end(box, list);
@@ -109,10 +161,8 @@ elm_main(int argc, char **argv)
    elm_box_pack_end(box, hbox);
    evas_object_show(hbox);
   
-
-   
    btn = elm_button_add(win);
-   elm_object_text_set(btn, "part information");
+   elm_object_text_set(btn, "info/favorite");
    evas_object_size_hint_weight_set(btn, 0, 0);
    evas_object_size_hint_align_set(btn, 0.5, 0.5);
    evas_object_smart_callback_add(btn, "clicked", _part_info, list);
@@ -121,7 +171,7 @@ elm_main(int argc, char **argv)
 
    
    evas_object_show(btn);
-   evas_object_resize(win, 320, 320);
+   evas_object_resize(win, 400, 420);
    evas_object_show(win);
 
    elm_run();

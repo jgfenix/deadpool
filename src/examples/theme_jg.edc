@@ -153,6 +153,7 @@ collections {
             }
          }
       }
+
       part { name: "elm.text";
          clip_to: "disclip";
          type:           TEXT;

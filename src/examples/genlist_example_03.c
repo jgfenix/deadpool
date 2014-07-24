@@ -100,6 +100,7 @@ elm_main(int argc, char **argv)
    list = _genlist_add(box);
    _genlist_fill(list);
 
+
    list = _genlist_add(box);
    //elm_genlist_mode_set(list, ELM_LIST_LIMIT);
    _genlist_fill(list);
